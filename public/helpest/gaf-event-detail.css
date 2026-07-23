@@ -1,0 +1,510 @@
+.gaf-event-detail-page {
+  background: #f6f2ea;
+}
+
+.gaf-event-detail-page .main-menu__logo img {
+  display: block !important;
+  width: auto;
+  max-width: 82px;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+.gaf-event-hero {
+  position: relative;
+  min-height: 720px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  padding: 210px 0 86px;
+  background: #101816;
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.gaf-event-hero__media {
+  position: absolute;
+  inset: 0;
+}
+
+.gaf-event-hero__media::before {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(16, 24, 22, 0.92), rgba(16, 24, 22, 0.54) 42%, rgba(16, 24, 22, 0.18)),
+    linear-gradient(0deg, rgba(16, 24, 22, 0.88), rgba(16, 24, 22, 0.12) 52%);
+}
+
+.gaf-event-hero__media img {
+  display: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gaf-event-hero .container {
+  position: relative;
+  z-index: 3;
+}
+
+.gaf-event-hero__content {
+  max-width: 850px;
+  color: #fff;
+}
+
+.gaf-event-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+  color: #fff;
+  font-family: "Figtree", sans-serif;
+  font-weight: 900;
+}
+
+.gaf-event-back:hover {
+  color: #800000;
+}
+
+.gaf-event-kicker {
+  margin: 0 0 10px;
+  color: #800000;
+  font-family: "Figtree", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gaf-event-hero__content h1 {
+  margin: 0;
+  color: #fff;
+  font-family: "Figtree", sans-serif;
+  font-size: clamp(46px, 7vw, 112px);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0.92;
+}
+
+.gaf-event-hero__content > p:not(.gaf-event-kicker) {
+  max-width: 680px;
+  margin: 24px 0 0;
+  color: rgba(255, 255, 255, 0.84);
+  font-size: 18px;
+  line-height: 1.65;
+}
+
+.gaf-event-stats {
+  display: grid;
+  max-width: 760px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  margin-top: 36px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.gaf-event-stats div {
+  padding: 22px;
+  background: rgba(143, 58, 58, 0.76);
+}
+
+.gaf-event-stats span,
+.gaf-event-stats small {
+  display: block;
+  font-family: "Figtree", sans-serif;
+}
+
+.gaf-event-stats span {
+  color: #fff;
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 1.1;
+}
+
+.gaf-event-stats small {
+  margin-top: 6px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gaf-event-store {
+  padding: 100px 0 120px;
+}
+
+.gaf-event-alert {
+  margin-bottom: 28px;
+  border-radius: 8px;
+  color: #8f3a3a;
+  background: #e7f6ea;
+  font-weight: 900;
+  padding: 16px 18px;
+}
+
+.gaf-event-store__head {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 38px;
+}
+
+.gaf-event-store__head h2 {
+  margin: 0;
+  color: #8f3a3a;
+  font-family: "Figtree", sans-serif;
+  font-size: clamp(34px, 4.5vw, 70px);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0.98;
+}
+
+.gaf-event-media-grid {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-auto-flow: dense;
+  gap: 30px;
+}
+
+.gaf-event-card {
+  grid-column: span 4;
+  overflow: hidden;
+  border-radius: 8px;
+  background: transparent;
+  box-shadow: none;
+}
+
+.gaf-event-card:nth-child(7n + 1),
+.gaf-event-card:nth-child(7n + 4) {
+  grid-column: span 7;
+}
+
+.gaf-event-card:nth-child(7n + 2),
+.gaf-event-card:nth-child(7n + 3) {
+  grid-column: span 5;
+}
+
+.gaf-event-card__preview {
+  position: relative;
+  aspect-ratio: 1.08 / 1;
+  overflow: hidden;
+  border-radius: 8px;
+  background: #101816;
+}
+
+.gaf-event-card__preview::before {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  content: "";
+  background: rgba(143, 58, 58, 0.82);
+  opacity: 0;
+  transition: opacity 500ms ease;
+}
+
+.gaf-event-card:hover .gaf-event-card__preview::before {
+  opacity: 1;
+}
+
+.gaf-event-card:nth-child(7n + 1) .gaf-event-card__preview,
+.gaf-event-card:nth-child(7n + 4) .gaf-event-card__preview {
+  aspect-ratio: 1.55 / 1;
+}
+
+.gaf-event-card__preview::after {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: rgba(255, 255, 255, 0.34);
+  background:
+    url("/images/gaf.icon.png") center/132px auto no-repeat,
+    linear-gradient(135deg, rgba(128, 0, 0, 0.18), rgba(143, 58, 58, 0.34)),
+    repeating-linear-gradient(-24deg, transparent 0 46px, rgba(255, 255, 255, 0.13) 46px 48px, transparent 48px 96px);
+  background-blend-mode: soft-light, normal, normal;
+  content: "PROPERTY OF THE GHANA ARMED FORCES  PROPERTY OF THE GHANA ARMED FORCES";
+  font-family: "Figtree", sans-serif;
+  font-size: clamp(13px, 1.3vw, 20px);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1.7;
+  pointer-events: none;
+  text-align: center;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.42);
+  text-transform: uppercase;
+  transform: rotate(-13deg) scale(1.35);
+}
+
+.gaf-event-card__preview img,
+.gaf-event-card__preview video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gaf-event-card__label {
+  display: none;
+}
+
+.gaf-event-card__label span {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.72);
+}
+
+.gaf-event-card__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(44px);
+  transition: opacity 600ms ease, transform 600ms ease;
+}
+
+.gaf-event-card:hover .gaf-event-card__overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gaf-event-card__overlay h3 {
+  margin: 0;
+  color: #fff;
+  font-family: "Figtree", sans-serif;
+  font-size: 25px;
+  font-weight: 900;
+  line-height: 1.12;
+}
+
+.gaf-event-card__overlay p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 14px;
+  font-weight: 800;
+}
+
+.gaf-event-card__overlay form {
+  margin: 0;
+}
+
+.gaf-event-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.gaf-event-card__overlay button,
+.gaf-event-download-btn {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 8px;
+  color: #fff;
+  background: #800000;
+  cursor: pointer;
+  font-family: "Figtree", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 12px 18px;
+  white-space: nowrap;
+}
+
+.gaf-event-download-btn {
+  border: 2px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.13);
+  text-decoration: none;
+}
+
+.gaf-event-card__overlay button:hover,
+.gaf-event-download-btn:hover {
+  color: #fff;
+  background: #8f3a3a;
+}
+
+.gaf-download-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.gaf-download-modal.is-visible {
+  display: flex;
+}
+
+.gaf-download-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 24, 22, 0.72);
+}
+
+.gaf-download-modal__dialog {
+  position: relative;
+  z-index: 2;
+  width: min(480px, 100%);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.34);
+  padding: 30px;
+}
+
+.gaf-download-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 8px;
+  color: #800000;
+  background: #fdf2f2;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.gaf-download-modal__dialog h3 {
+  margin: 0;
+  color: #101816;
+  font-family: "Figtree", sans-serif;
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.gaf-download-modal__copy {
+  margin: 14px 0 0;
+  color: #53605c;
+  line-height: 1.6;
+}
+
+.gaf-download-modal__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  border-radius: 8px;
+  background: #f6f2ea;
+  padding: 14px;
+}
+
+.gaf-download-modal__summary strong,
+.gaf-download-modal__summary span {
+  font-family: "Figtree", sans-serif;
+  font-weight: 900;
+}
+
+.gaf-download-modal__summary span {
+  color: #800000;
+}
+
+.gaf-download-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.gaf-download-modal__actions form {
+  margin: 0;
+}
+
+.gaf-download-modal__actions button,
+.gaf-download-modal__actions a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: "Figtree", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 12px 18px;
+}
+
+.gaf-download-modal__actions button {
+  border: 0;
+  color: #fff;
+  background: #800000;
+  cursor: pointer;
+}
+
+.gaf-download-modal__actions a {
+  color: #800000;
+  background: #fdf2f2;
+  text-decoration: none;
+}
+
+@media (max-width: 991px) {
+  .gaf-event-hero {
+    background-attachment: scroll;
+    min-height: 640px;
+    padding-top: 170px;
+  }
+
+  .gaf-event-media-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gaf-event-card,
+  .gaf-event-card:nth-child(7n + 1),
+  .gaf-event-card:nth-child(7n + 2),
+  .gaf-event-card:nth-child(7n + 3),
+  .gaf-event-card:nth-child(7n + 4) {
+    grid-column: span 1;
+  }
+}
+
+@media (max-width: 767px) {
+  .gaf-event-hero {
+    min-height: auto;
+    padding: 150px 0 56px;
+  }
+
+  .gaf-event-stats,
+  .gaf-event-media-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .gaf-event-store__head {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .gaf-event-card__overlay button,
+  .gaf-event-download-btn,
+  .gaf-event-card__overlay form {
+    width: 100%;
+  }
+}

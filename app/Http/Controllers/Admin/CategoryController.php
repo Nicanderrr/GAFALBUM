@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
     public function index()
     {
-        $categories = \App\Models\Category::latest()->paginate(10);
+        $categories = \App\Models\Category::withCount('images')->latest()->paginate(10);
         return view('admin.categories.index', compact('categories'));
     }
 

@@ -1,0 +1,197 @@
+.gaf-dashboard-page .main-menu-two__right {
+  gap: 16px;
+}
+
+.gaf-dashboard-page .section-title__tagline,
+.gaf-dashboard-page .section-title__title,
+.gaf-dashboard-page .main-slider-two__title,
+.gaf-dashboard-page .process-one__title,
+.gaf-dashboard-page .services-two__title,
+.gaf-dashboard-page .cta-one__title,
+.gaf-dashboard-page .site-footer-two__content-title {
+  font-family: Constantia, "Times New Roman", serif;
+}
+
+.gaf-dashboard-page .gaf-dashboard-logout-form {
+  margin: 0;
+}
+
+.gaf-dashboard-page .gaf-dashboard-logout {
+  border: 0;
+}
+
+.gaf-dashboard-page .gaf-dashboard-logout span {
+  color: inherit;
+  font-size: 17px;
+  line-height: 1;
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero {
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__single {
+  min-height: 760px;
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__bg {
+  display: none;
+}
+
+@media (max-width: 991px) {
+  .gaf-dashboard-page .gaf-dashboard-hero {
+    background-attachment: scroll;
+  }
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__overly {
+  background:
+    linear-gradient(90deg, rgba(128, 0, 0, 0.54), rgba(143, 58, 58, 0.28) 42%, rgba(143, 58, 58, 0.08)),
+    linear-gradient(0deg, rgba(128, 0, 0, 0.38), rgba(128, 0, 0, 0.04) 52%);
+  opacity: 1;
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__shape-1,
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__shape-2,
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__shape-3 {
+  display: none;
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__img {
+  visibility: visible;
+  opacity: 1;
+  transform: perspective(400px) rotateY(0deg) translateY(0) scale(1);
+  transition-delay: 0ms;
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__img,
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__img > img {
+  width: 100%;
+  height: 100%;
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__img > img {
+  object-fit: cover;
+  object-position: center;
+}
+
+.gaf-dashboard-page .gaf-helpest-cart-action {
+  position: relative;
+  display: inline-flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--helpest-base);
+  font-size: 21px;
+}
+
+.gaf-dashboard-page .gaf-cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #111;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__content {
+  padding-top: 235px;
+  padding-bottom: 150px;
+}
+
+.gaf-dashboard-page .main-slider-two__text {
+  max-width: 680px;
+}
+
+.gaf-dashboard-page .gaf-dashboard-process {
+  padding-top: 120px;
+}
+
+.gaf-dashboard-page .counter-one__count-list {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.gaf-dashboard-page .counter-one__count.gaf-service-number {
+  color: var(--helpest-white);
+  font-size: 36px;
+  line-height: 1;
+  word-break: break-word;
+}
+
+.gaf-dashboard-page .gaf-dashboard-actions {
+  padding-bottom: 120px;
+}
+
+.gaf-dashboard-page .gaf-dashboard-actions .row {
+  row-gap: 30px;
+}
+
+.gaf-dashboard-page .services-two__single {
+  height: 100%;
+}
+
+.gaf-dashboard-page .services-two__img img {
+  aspect-ratio: 1.22 / 1;
+  object-fit: cover;
+}
+
+.gaf-dashboard-page .cta-one {
+  padding-top: 0;
+}
+
+.gaf-dashboard-page .gaf-dashboard-footer {
+  margin-top: 0;
+}
+
+.gaf-dashboard-page .footer-widget-two__about-logo a::before,
+.gaf-dashboard-page .mobile-nav__content .logo-box a::before {
+  color: #ffffff;
+}
+
+@media (max-width: 1199px) {
+  .gaf-dashboard-page .counter-one__count-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 767px) {
+  .gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__single {
+    min-height: 680px;
+  }
+
+  .gaf-dashboard-page .gaf-dashboard-hero .main-slider-two__content {
+    padding-top: 180px;
+    padding-bottom: 90px;
+  }
+
+  .gaf-dashboard-page .main-slider-two__title {
+    font-size: 48px;
+    line-height: 1.05;
+  }
+
+  .gaf-dashboard-page .main-slider-two__text {
+    font-size: 17px;
+    line-height: 1.55;
+  }
+
+  .gaf-dashboard-page .counter-one__count-list {
+    grid-template-columns: 1fr;
+  }
+
+  .gaf-dashboard-page .counter-one__count.gaf-service-number {
+    font-size: 28px;
+  }
+}

@@ -41,6 +41,10 @@
                         <span class="nav-icon">📁</span>
                         Categories
                     </a>
+                    <a href="{{ route('admin.site-heroes.index') }}" class="nav-item {{ request()->routeIs('admin.site-heroes.*') ? 'active' : '' }}">
+                        <span class="nav-icon">IMG</span>
+                        Hero Images
+                    </a>
                     <a href="{{ route('admin.admins.index') }}" class="nav-item {{ request()->routeIs('admin.admins.*') ? 'active' : '' }}">
                         <span class="nav-icon">👥</span>
                         Administrators

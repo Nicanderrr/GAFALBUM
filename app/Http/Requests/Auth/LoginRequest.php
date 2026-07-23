@@ -3,9 +3,11 @@
 namespace App\Http\Requests\Auth;
 
 use Illuminate\Auth\Events\Lockout;
+use App\Models\User;
 use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
@@ -29,26 +31,54 @@ class LoginRequest extends FormRequest
     {
         return [
             'service_number' => ['required', 'string'],
-            'password' => ['required', 'string'],
+            'password' => [$this->routeIs('admin.login.store') ? 'required' : 'nullable', 'string'],
         ];
     }
 
     /**
-     * Attempt to authenticate the request's credentials.
+     * Attempt to authenticate a regular user's service number.
      *
      * @throws ValidationException
      */
-    public function authenticate(): void
+    public function authenticateUser(): void
     {
         $this->ensureIsNotRateLimited();
 
-        if (! Auth::attempt($this->only('service_number', 'password'), $this->boolean('remember'))) {
+        $user = User::where('service_number', $this->string('service_number'))->first();
+
+        if (! $user || $user->is_admin) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
                 'service_number' => trans('auth.failed'),
             ]);
         }
+
+        Auth::login($user, $this->boolean('remember'));
+
+        RateLimiter::clear($this->throttleKey());
+    }
+
+    /**
+     * Attempt to authenticate an admin's service number and password.
+     *
+     * @throws ValidationException
+     */
+    public function authenticateAdmin(): void
+    {
+        $this->ensureIsNotRateLimited();
+
+        $user = User::where('service_number', $this->string('service_number'))->first();
+
+        if (! $user || ! $user->is_admin || ! Hash::check((string) $this->input('password'), $user->password)) {
+            RateLimiter::hit($this->throttleKey());
+
+            throw ValidationException::withMessages([
+                'service_number' => trans('auth.failed'),
+            ]);
+        }
+
+        Auth::login($user, $this->boolean('remember'));
 
         RateLimiter::clear($this->throttleKey());
     }

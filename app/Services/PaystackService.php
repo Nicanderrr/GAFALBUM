@@ -7,17 +7,22 @@ use Illuminate\Support\Facades\Log;
 
 class PaystackService
 {
-    protected $secretKey;
-    protected $baseUrl;
+    protected ?string $secretKey;
+    protected string $baseUrl;
 
     public function __construct()
     {
-        $this->secretKey = env('PAYSTACK_SECRET_KEY');
+        $this->secretKey = config('services.paystack.secret_key');
         $this->baseUrl = 'https://api.paystack.co';
     }
 
     public function initializePayment(array $data)
     {
+        if (! $this->secretKey) {
+            Log::error('Paystack Initialization Error: missing secret key');
+            return null;
+        }
+
         try {
             $response = Http::withToken($this->secretKey)
                 ->post($this->baseUrl . '/transaction/initialize', $data);
@@ -36,6 +41,11 @@ class PaystackService
 
     public function verifyPayment($reference)
     {
+        if (! $this->secretKey) {
+            Log::error('Paystack Verification Error: missing secret key');
+            return null;
+        }
+
         try {
             $response = Http::withToken($this->secretKey)
                 ->get($this->baseUrl . '/transaction/verify/' . $reference);

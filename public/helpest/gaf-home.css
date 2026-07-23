@@ -1,0 +1,81 @@
+.custom-cursor,
+:root {
+  --helpest-base: #800000;
+  --helpest-base-rgb: 128, 0, 0;
+  --helpest-black: #8f3a3a;
+  --helpest-black-rgb: 143, 58, 58;
+  --helpest-secondary: #a85555;
+  --helpest-secondary-rgb: 168, 85, 85;
+  --helpest-primary: #fca5a5;
+  --helpest-primary-rgb: 252, 165, 165;
+}
+
+.main-menu-two__logo img,
+.footer-widget-two__about-logo img,
+.mobile-nav__content .logo-box img,
+.sidebar-info-contents .logo img {
+  display: block !important;
+  width: auto;
+  max-width: 82px;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+.main-menu-two__btn-box .thm-btn .thm-btn-text,
+.main-slider-two__btn-box .thm-btn .thm-btn-text {
+  font-size: 0;
+}
+
+.main-menu-two__btn-box .thm-btn .thm-btn-text::before,
+.main-slider-two__btn-box .thm-btn .thm-btn-text::before {
+  content: "Enter Gallery";
+  font-size: 14px;
+}
+
+.main-menu-two__cart {
+  display: none;
+}
+
+.main-menu-two__user a {
+  background: #8f3a3a;
+  color: #fff;
+}
+
+.main-slider-two__sub-title,
+.section-title__tagline {
+  color: #800000;
+}
+
+.main-slider-two__title {
+  max-width: 880px;
+}
+
+.main-slider-two__title span,
+.section-title__title span {
+  color: #800000;
+}
+
+.gaf-dashboard-page .main-slider-two__img-shape img,
+.main-slider-two__img-shape img {
+  filter: sepia(1) saturate(2.1) hue-rotate(348deg) brightness(1.08) contrast(1.06);
+}
+
+.gaf-home-copy {
+  max-width: 760px;
+  margin-top: 18px;
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 1.55;
+}
+
+.site-footer-two__newsletter {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .main-menu-two__logo img,
+  .mobile-nav__content .logo-box img {
+    max-width: 66px;
+    max-height: 50px;
+  }
+}

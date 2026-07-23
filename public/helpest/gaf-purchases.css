@@ -1,0 +1,216 @@
+.gaf-purchases-page .main-menu__logo img,
+.gaf-purchases-page .mobile-nav__content .logo-box img {
+  display: block !important;
+  width: auto;
+  max-width: 82px;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+.gaf-purchases-page .main-menu__right {
+  gap: 12px;
+}
+
+.gaf-purchases-page .main-menu__right form {
+  margin: 0;
+}
+
+.gaf-purchases-page .gaf-logout-btn {
+  border: 0;
+}
+
+.gaf-purchases-page .gaf-helpest-cart-action {
+  position: relative;
+  display: inline-flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--helpest-base);
+  font-size: 21px;
+}
+
+.gaf-purchases-page .gaf-cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #111;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.gaf-purchases-page .page-header {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 166px 0 105px;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+
+.gaf-purchases-page .page-header__bg {
+  display: none;
+}
+
+.gaf-purchases-carousel {
+  padding-top: 120px;
+}
+
+.gaf-purchases-heading {
+  max-width: 720px;
+  margin-bottom: 44px;
+}
+
+.gaf-purchases-heading p,
+.gaf-empty-purchases p {
+  margin: 0 0 10px;
+  color: var(--helpest-base);
+  font-family: "Figtree", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gaf-purchases-heading h3,
+.gaf-empty-purchases h3 {
+  margin: 0;
+  color: #8f3a3a;
+  font-family: "Figtree", sans-serif;
+  font-size: clamp(38px, 5vw, 76px);
+  font-weight: 900;
+  letter-spacing: 0;
+  line-height: 0.98;
+}
+
+.gaf-purchase-alert {
+  margin-bottom: 28px;
+  border-radius: 8px;
+  color: #166534;
+  background: #dcfce7;
+  font-weight: 900;
+  padding: 16px 18px;
+}
+
+.gaf-purchases-page .blog-one__img img {
+  aspect-ratio: 1.1 / 1;
+  object-fit: cover;
+}
+
+.gaf-purchases-page .blog-one__content {
+  min-height: 342px;
+}
+
+.gaf-purchases-page .blog-one__title {
+  margin-bottom: 15px;
+}
+
+.gaf-purchase-status {
+  display: inline-flex;
+  margin-left: 6px;
+  border-radius: 8px;
+  color: #7a4a05;
+  background: #fff2cf;
+  font-size: 12px;
+  font-weight: 900;
+  padding: 3px 8px;
+}
+
+.gaf-purchase-status.success {
+  color: #166534;
+  background: #dcfce7;
+}
+
+.gaf-purchase-downloads {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.gaf-purchase-downloads a {
+  display: inline-flex;
+  min-height: 42px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  color: #ffffff;
+  background: var(--helpest-base);
+  font-family: "Figtree", sans-serif;
+  font-size: 13px;
+  font-weight: 900;
+  line-height: 1.2;
+  padding: 10px 13px;
+}
+
+.gaf-purchase-downloads a:hover {
+  color: #ffffff;
+  background: #8f3a3a;
+}
+
+.gaf-empty-purchases {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  border-radius: 8px;
+  background: #f6f2ea;
+  padding: 42px;
+}
+
+.gaf-purchases-pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 42px;
+}
+
+.gaf-purchases-pagination nav {
+  width: 100%;
+}
+
+.gaf-purchases-pagination svg {
+  width: 20px;
+}
+
+@media (max-width: 991px) {
+  .gaf-purchases-page .page-header {
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 767px) {
+  .gaf-purchases-page .main-menu__logo img,
+  .gaf-purchases-page .mobile-nav__content .logo-box img {
+    max-width: 66px;
+    max-height: 50px;
+  }
+
+  .gaf-purchases-carousel {
+    padding-top: 80px;
+  }
+
+  .gaf-purchases-page .page-header {
+    padding: 132px 0 78px;
+  }
+
+  .gaf-empty-purchases {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 28px;
+  }
+}

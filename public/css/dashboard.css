@@ -160,7 +160,10 @@ body {
 
 /* Topbar */
 .topbar {
-    height: 70px;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    min-height: 70px;
     background-color: #800000;
     display: flex;
     align-items: center;

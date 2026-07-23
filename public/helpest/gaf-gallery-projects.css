@@ -1,0 +1,560 @@
+.gaf-projects-gallery .main-menu__logo img,
+.gaf-projects-gallery .footer-widget-two__about-logo img,
+.gaf-projects-gallery .mobile-nav__content .logo-box img {
+  display: block !important;
+  width: auto;
+  max-width: 82px;
+  max-height: 58px;
+  object-fit: contain;
+}
+
+.gaf-projects-gallery .main-menu__right {
+  gap: 12px;
+}
+
+.gaf-projects-gallery .main-menu__right form {
+  margin: 0;
+}
+
+.gaf-projects-gallery .gaf-logout-btn {
+  border: 0;
+}
+
+.gaf-projects-gallery .page-header {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  background-attachment: fixed;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  padding: 166px 0 105px;
+  -webkit-mask-position: center bottom;
+  mask-position: center bottom;
+  -webkit-mask-size: cover;
+  mask-size: cover;
+}
+
+.gaf-projects-gallery .page-header__bg {
+  display: none;
+}
+
+.gaf-projects-gallery .projects-page {
+  padding-top: 120px;
+}
+
+.gaf-projects-gallery .projects-page__img {
+  background: #101816;
+}
+
+.gaf-projects-gallery .projects-page__img::after {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  color: rgba(255, 255, 255, 0.36);
+  background:
+    url("/images/gaf.icon.png") center/132px auto no-repeat,
+    linear-gradient(135deg, rgba(128, 0, 0, 0.18), rgba(143, 58, 58, 0.34)),
+    repeating-linear-gradient(-24deg, transparent 0 46px, rgba(255, 255, 255, 0.13) 46px 48px, transparent 48px 96px);
+  background-blend-mode: soft-light, normal, normal;
+  content: "PROPERTY OF THE GHANA ARMED FORCES  PROPERTY OF THE GHANA ARMED FORCES";
+  font-family: "Figtree", sans-serif;
+  font-size: clamp(13px, 1.3vw, 20px);
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  line-height: 1.7;
+  pointer-events: none;
+  text-align: center;
+  text-shadow: 0 2px 16px rgba(0, 0, 0, 0.42);
+  text-transform: uppercase;
+  transform: rotate(-13deg) scale(1.35);
+}
+
+.gaf-projects-gallery .projects-page__img::before {
+  z-index: 3;
+}
+
+.gaf-projects-gallery .projects-page__img img {
+  aspect-ratio: 1.08 / 1;
+  height: 100%;
+  object-fit: cover;
+}
+
+.gaf-projects-gallery .projects-page ul li:nth-child(1) .projects-page__img img,
+.gaf-projects-gallery .projects-page ul li:nth-child(4) .projects-page__img img {
+  aspect-ratio: 1.55 / 1;
+}
+
+.gaf-projects-gallery .projects-page__icon {
+  flex-direction: column;
+  gap: 18px;
+  padding: 28px;
+  text-align: center;
+  z-index: 4;
+}
+
+.gaf-projects-gallery .projects-page__icon .gaf-project-title {
+  position: relative;
+  display: flex;
+  width: min(82%, 360px);
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  color: var(--helpest-white);
+  background: rgba(143, 58, 58, 0.86);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.28);
+  padding: 18px 20px;
+  transform: translateY(55px);
+  opacity: 0;
+  transition: all 700ms ease;
+  z-index: 3;
+}
+
+.gaf-projects-gallery .projects-page__single:hover .projects-page__icon .gaf-project-title {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.gaf-projects-gallery .gaf-project-title span {
+  color: currentColor;
+  font-family: var(--helpest-font-two);
+  font-size: 23px;
+  font-weight: 800;
+  line-height: 1.12;
+}
+
+.gaf-projects-gallery .gaf-project-title small {
+  color: currentColor;
+  font-family: var(--helpest-font);
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.35;
+  opacity: 0.92;
+}
+
+.gaf-projects-gallery .projects-page__icon .gaf-project-title:hover {
+  color: var(--helpest-white);
+}
+
+.gaf-projects-gallery .gaf-hidden-event-popup {
+  display: none !important;
+}
+
+.gaf-projects-gallery .gaf-project-pagination {
+  display: flex;
+  justify-content: center;
+  margin: 28px 0 0;
+}
+
+.gaf-projects-gallery .gaf-helpest-cart-action {
+  position: relative;
+  display: inline-flex;
+  width: 54px;
+  height: 54px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #ffffff;
+  background: var(--helpest-base);
+  font-size: 21px;
+}
+
+.gaf-projects-gallery .gaf-cart-count {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  display: inline-flex;
+  min-width: 22px;
+  height: 22px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: #111;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.mfp-figure figure {
+  position: relative;
+  overflow: hidden;
+}
+
+.mfp-figure figure::before {
+  position: absolute;
+  inset: 40px 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.34);
+  background:
+    url("/images/gaf.icon.png") center/176px auto no-repeat,
+    linear-gradient(135deg, rgba(128, 0, 0, 0.18), rgba(143, 58, 58, 0.28)),
+    repeating-linear-gradient(-24deg, transparent 0 52px, rgba(255, 255, 255, 0.15) 52px 54px, transparent 54px 104px);
+  background-blend-mode: soft-light, normal, normal;
+  content: "PROPERTY OF THE GHANA ARMED FORCES  PROPERTY OF THE GHANA ARMED FORCES  PROPERTY OF THE GHANA ARMED FORCES";
+  font-family: "Figtree", sans-serif;
+  font-size: clamp(16px, 2.4vw, 32px);
+  font-weight: 900;
+  letter-spacing: 0.16em;
+  line-height: 1.8;
+  pointer-events: none;
+  text-align: center;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.54);
+  text-transform: uppercase;
+  transform: rotate(-13deg) scale(1.25);
+}
+
+.mfp-figure .mfp-img {
+  position: relative;
+  z-index: 1;
+}
+
+.mfp-wrap {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+}
+
+.mfp-container {
+  min-height: 100%;
+  padding-bottom: 132px;
+}
+
+.mfp-image-holder .mfp-content {
+  margin-top: 26px;
+  margin-bottom: 132px;
+}
+
+.mfp-bottom-bar {
+  z-index: 3;
+}
+
+.gaf-lightbox-cart-form {
+  margin: 0;
+}
+
+.gaf-lightbox-cart-panel {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  z-index: 1100;
+  display: none;
+  pointer-events: none;
+}
+
+.gaf-lightbox-cart-panel.is-visible {
+  display: flex;
+  justify-content: center;
+}
+
+.gaf-lightbox-cart-panel .gaf-lightbox-cart-form {
+  display: flex;
+  width: min(680px, 100%);
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.34);
+  border-radius: 8px;
+  background: rgba(10, 24, 22, 0.98);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.46), 0 0 0 6px rgba(128, 0, 0, 0.2);
+  padding: 14px;
+  pointer-events: auto;
+}
+
+.gaf-lightbox-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.gaf-lightbox-actions form {
+  margin: 0;
+}
+
+.gaf-lightbox-cart-info {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 2px;
+  color: #fff;
+  font-family: "Figtree", sans-serif;
+  line-height: 1.25;
+}
+
+.gaf-lightbox-cart-info strong {
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 900;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.gaf-lightbox-cart-info span {
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.gaf-lightbox-cart-form button,
+.gaf-lightbox-download {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 0;
+  border-radius: 999px;
+  color: #fff;
+  background: #800000;
+  cursor: pointer;
+  font-family: "Figtree", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 1.2;
+  padding: 12px 18px;
+  box-shadow: 0 10px 28px rgba(128, 0, 0, 0.42);
+}
+
+.gaf-lightbox-download {
+  border: 2px solid rgba(255, 255, 255, 0.38);
+  background: rgba(255, 255, 255, 0.13);
+  text-decoration: none;
+}
+
+.gaf-lightbox-cart-form button:disabled {
+  cursor: default;
+  opacity: 0.82;
+}
+
+.gaf-download-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+
+.gaf-download-modal.is-visible {
+  display: flex;
+}
+
+.gaf-download-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(16, 24, 22, 0.72);
+}
+
+.gaf-download-modal__dialog {
+  position: relative;
+  z-index: 2;
+  width: min(480px, 100%);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.34);
+  padding: 30px;
+}
+
+.gaf-download-modal__close {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 38px;
+  height: 38px;
+  border: 0;
+  border-radius: 8px;
+  color: #800000;
+  background: #fdf2f2;
+  cursor: pointer;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.gaf-download-modal__kicker {
+  margin: 0 0 10px;
+  color: #800000;
+  font-family: "Figtree", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.gaf-download-modal__dialog h3 {
+  margin: 0;
+  color: #101816;
+  font-family: "Figtree", sans-serif;
+  font-size: 34px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.gaf-download-modal__copy {
+  margin: 14px 0 0;
+  color: #53605c;
+  line-height: 1.6;
+}
+
+.gaf-download-modal__summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 22px;
+  border-radius: 8px;
+  background: #f6f2ea;
+  padding: 14px;
+}
+
+.gaf-download-modal__summary strong,
+.gaf-download-modal__summary span {
+  font-family: "Figtree", sans-serif;
+  font-weight: 900;
+}
+
+.gaf-download-modal__summary span {
+  color: #800000;
+}
+
+.gaf-download-modal__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 22px;
+}
+
+.gaf-download-modal__actions form {
+  margin: 0;
+}
+
+.gaf-download-modal__actions button,
+.gaf-download-modal__actions a {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-family: "Figtree", sans-serif;
+  font-size: 14px;
+  font-weight: 900;
+  padding: 12px 18px;
+}
+
+.gaf-download-modal__actions button {
+  border: 0;
+  color: #fff;
+  background: #800000;
+  cursor: pointer;
+}
+
+.gaf-download-modal__actions a {
+  color: #800000;
+  background: #fdf2f2;
+  text-decoration: none;
+}
+
+.mfp-counter {
+  top: 20px;
+  right: 20px;
+  color: rgba(255, 255, 255, 0.86);
+  font-family: "Figtree", sans-serif;
+  font-weight: 800;
+}
+
+.gaf-cart-toast {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 9999;
+  max-width: min(360px, calc(100vw - 32px));
+  border-radius: 8px;
+  color: #fff;
+  background: #8f3a3a;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.22);
+  font-family: "Figtree", sans-serif;
+  font-size: 15px;
+  font-weight: 900;
+  line-height: 1.35;
+  opacity: 0;
+  padding: 16px 18px;
+  pointer-events: none;
+  transform: translateY(16px);
+  transition: opacity 220ms ease, transform 220ms ease;
+}
+
+.gaf-cart-toast.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gaf-projects-gallery .gaf-project-pagination nav {
+  width: 100%;
+}
+
+.gaf-projects-gallery .gaf-project-pagination svg {
+  width: 20px;
+}
+
+.gaf-projects-gallery .site-footer-two {
+  margin-top: 0;
+}
+
+@media (max-width: 991px) {
+  .gaf-projects-gallery .page-header {
+    background-attachment: scroll;
+  }
+}
+
+@media (max-width: 767px) {
+  .gaf-projects-gallery .main-menu__logo img,
+  .gaf-projects-gallery .mobile-nav__content .logo-box img {
+    max-width: 66px;
+    max-height: 50px;
+  }
+
+  .gaf-projects-gallery .projects-page {
+    padding-top: 80px;
+  }
+
+  .gaf-projects-gallery .page-header {
+    padding: 132px 0 78px;
+  }
+
+  .gaf-projects-gallery .projects-page ul li:nth-child(1) .projects-page__img img,
+  .gaf-projects-gallery .projects-page ul li:nth-child(4) .projects-page__img img,
+  .gaf-projects-gallery .projects-page__img img {
+    aspect-ratio: 1 / 1;
+  }
+
+  .gaf-projects-gallery .gaf-project-title span {
+    font-size: 21px;
+  }
+
+  .gaf-lightbox-cart-panel {
+    right: 12px;
+    bottom: 12px;
+    left: 12px;
+  }
+
+  .gaf-lightbox-cart-panel .gaf-lightbox-cart-form {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .gaf-lightbox-actions,
+  .gaf-lightbox-actions form,
+  .gaf-lightbox-cart-form button,
+  .gaf-lightbox-download {
+    width: 100%;
+  }
+}

@@ -1,0 +1,219 @@
+@font-face {
+  font-family: "Aeonik";
+  src: url("/assets/fonts/Aeonik-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Aeonik";
+  src: url("/assets/fonts/Aeonik-Medium.woff2") format("woff2");
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: "IBMPlexMono";
+  src: url("/assets/fonts/IBMPlexMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+}
+
+.gaf-logo {
+  display: inline-flex;
+  flex-direction: column;
+  gap: .08em;
+  line-height: .86;
+}
+
+.header-actions .talk.active {
+  color: #050508;
+  background: #e7e9f2;
+}
+
+.gaf-menu-submit {
+  width: 100%;
+  height: 70px;
+  border: 0;
+  border-radius: 18px;
+  color: #fff;
+  background: #000;
+  cursor: pointer;
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.gaf-page-without-hero {
+  padding-top: clamp(110px, 14vh, 180px);
+}
+
+.gaf-template-gallery .gaf-hidden-template-hero {
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+.gaf-template-gallery .gaf-hidden-template-reel {
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+.gaf-template-gallery .gaf-hidden-template-goal {
+  height: 0 !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  opacity: 0 !important;
+}
+
+.gaf-template-gallery #home-featured {
+  padding-top: calc(var(--base-padding-y) + var(--header-size) * 5);
+}
+
+.gaf-template-gallery .project-item-image,
+.project-experience .project-details-item.is-image,
+.project-experience .project-details-item.is-video {
+  background-position: center;
+  background-size: cover;
+}
+
+.gaf-template-gallery .project-item-footer {
+  text-transform: none;
+}
+
+.gaf-template-gallery #header-logo {
+  color: #f7f3ec;
+}
+
+.project-experience #project-details,
+.project-experience #project-details-meta,
+.project-experience #project-details-title,
+.project-experience #project-details-desc,
+.project-experience .project-details-side-list-title,
+.project-experience .project-details-side-list-item {
+  color: var(--project-details-text) !important;
+}
+
+.gaf-template-gallery .gaf-template-pagination {
+  margin: 4rem var(--base-padding-x) 0;
+  color: #020022;
+  font-family: "IBMPlexMono", monospace;
+  font-size: 12px;
+}
+
+.gaf-template-gallery .gaf-menu-link-form,
+.gaf-template-gallery .gaf-menu-link-button {
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  color: inherit;
+  background: transparent;
+  font: inherit;
+  text-align: inherit;
+  cursor: pointer;
+}
+
+.gaf-template-gallery .gaf-menu-download-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.gaf-template-gallery .gaf-menu-download-link #header-menu-newsletter-input-field {
+  display: flex;
+  align-items: center;
+  padding-left: 1.25rem;
+}
+
+.gaf-media-img {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project-card.gaf-gallery-card:before {
+  background: linear-gradient(135deg, rgba(0, 0, 0, .05), rgba(0, 0, 0, .48));
+}
+
+.project-card.gaf-gallery-card small,
+.project-card.gaf-gallery-card strong,
+.gaf-card-price {
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .42);
+}
+
+.gaf-card-price {
+  margin-top: 16px;
+  font-family: "IBMPlexMono", monospace;
+  font-size: 13px;
+  text-transform: uppercase;
+  opacity: .86;
+}
+
+.gaf-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 42px;
+  color: #020202;
+  background: #fff;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.gaf-table th,
+.gaf-table td {
+  padding: 18px 24px;
+  border-bottom: 1px solid rgba(0, 0, 0, .09);
+  text-align: left;
+}
+
+.gaf-table th {
+  color: #767a87;
+  font-family: "IBMPlexMono", monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.gaf-thumb {
+  width: 74px;
+  height: 54px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #e5e7f1;
+}
+
+.gaf-detail-media {
+  grid-column: 1 / span 7;
+  min-height: 72vh;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #111;
+}
+
+.gaf-detail-media img {
+  width: 100%;
+  height: 100%;
+  min-height: 72vh;
+  object-fit: cover;
+}
+
+.gaf-detail-copy {
+  grid-column: 8 / span 5;
+  align-self: stretch;
+}
+
+@media (max-width: 900px) {
+  .gaf-detail-media,
+  .gaf-detail-copy {
+    grid-column: 1 / span 6;
+  }
+}
