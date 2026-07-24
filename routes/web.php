@@ -17,16 +17,31 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/gallery', function () {
-        $images = \App\Models\Image::with(['category', 'coverMedia', 'media'])->withCount('media')->inRandomOrder()->paginate(12);
+        $search = trim((string) request('search'));
+        $imagesQuery = \App\Models\Image::published()->with(['category', 'coverMedia', 'media'])->withCount('media');
+
+        if ($search !== '') {
+            $imagesQuery->where(function ($query) use ($search) {
+                $query
+                    ->where('title', 'like', "%{$search}%")
+                    ->orWhere('description', 'like', "%{$search}%")
+                    ->orWhereHas('category', fn ($categoryQuery) => $categoryQuery->where('name', 'like', "%{$search}%"));
+            })->latest();
+        } else {
+            $imagesQuery->inRandomOrder();
+        }
+
+        $images = $imagesQuery->paginate(12)->withQueryString();
         $purchasedItems = \App\Models\TransactionItem::whereHas('transaction', fn ($query) => $query
             ->where('user_id', auth()->id())
             ->where('status', 'success'))
             ->pluck('id', 'image_media_id');
 
-        return view('user.gallery.index', compact('images', 'purchasedItems'));
+        return view('user.gallery.index', compact('images', 'purchasedItems', 'search'));
     })->name('gallery.index');
 
     Route::get('/gallery/{image}', function (\App\Models\Image $image) {
+        abort_unless($image->status === 'published', 404);
         $image->load(['category', 'media']);
         $purchasedItems = \App\Models\TransactionItem::whereHas('transaction', fn ($query) => $query
             ->where('user_id', auth()->id())
@@ -37,6 +52,7 @@ Route::middleware('auth')->group(function () {
     })->name('gallery.show');
 
     Route::get('/gallery/{image}/experience', function (\App\Models\Image $image) {
+        abort_unless($image->status === 'published', 404);
         $image->load(['category', 'media']);
         return view('user.gallery.experience', compact('image'));
     })->name('gallery.experience');
@@ -67,6 +83,11 @@ Route::middleware(['auth', 'is_admin'])->prefix('admin')->name('admin.')->group(
     // Categories
     Route::resource('categories', \App\Http\Controllers\Admin\CategoryController::class);
     
+    // Payments
+    Route::get('/payments', [\App\Http\Controllers\Admin\PaymentController::class, 'index'])->name('payments.index');
+    Route::post('/ai/chat', [\App\Http\Controllers\Admin\AdminAIController::class, 'chat'])->name('ai.chat');
+    Route::post('/ai/analyze', [\App\Http\Controllers\Admin\AdminAIController::class, 'analyze'])->name('ai.analyze');
+
     // Images
     Route::resource('images', \App\Http\Controllers\Admin\ImageController::class);
 

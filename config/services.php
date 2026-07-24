@@ -41,4 +41,8 @@ return [
         'currency' => env('PAYSTACK_CURRENCY', 'GHS'),
     ],
 
+    'openai' => [
+        'api_key' => env('GAFALBUM_OPENAI_API_KEY', env('OPENAI_API_KEY')),
+    ],
+
 ];

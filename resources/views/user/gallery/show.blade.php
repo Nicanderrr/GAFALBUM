@@ -12,6 +12,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{ $image->title }} - GAFALBUM</title>
+    <link rel="apple-touch-icon" href="/images/gaf.icon.png" />
+    <link rel="icon" type="image/png" href="/images/gaf.icon.png" />
+    <link rel="shortcut icon" href="/images/gaf.icon.png" />
 
     <link rel="stylesheet" href="/helpest/assets/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/helpest/assets/css/animate.min.css" />

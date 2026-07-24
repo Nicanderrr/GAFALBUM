@@ -6,10 +6,9 @@
     <title>Gallery - GAFALBUM</title>
     <meta name="description" content="GAFALBUM gallery previews and paid downloads." />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/helpest/assets/images/favicons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/helpest/assets/images/favicons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/helpest/assets/images/favicons/favicon-16x16.png" />
-    <link rel="manifest" href="/helpest/assets/images/favicons/site.webmanifest" />
+    <link rel="apple-touch-icon" href="/images/gaf.icon.png" />
+    <link rel="icon" type="image/png" href="/images/gaf.icon.png" />
+    <link rel="shortcut icon" href="/images/gaf.icon.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
@@ -59,6 +58,7 @@
 <body class="custom-cursor gaf-projects-gallery">
     @php
         $galleryHero = \App\Models\SiteHero::urlFor('gallery', '/helpest/assets/images/backgrounds/page-header-bg.jpg');
+        $search = $search ?? '';
     @endphp
     <div class="custom-cursor__cursor"></div>
     <div class="custom-cursor__cursor-two"></div>
@@ -150,8 +150,39 @@
             </div>
         </section>
 
+        <div class="gaf-gallery-search-overlap">
+            <div class="container">
+                <div class="gaf-gallery-search-shell">
+                    <form method="GET" action="{{ route('gallery.index') }}" class="gaf-gallery-search-form{{ $search !== '' ? ' is-active' : '' }}">
+                        <div class="gaf-gallery-search-input">
+                            <span class="fas fa-search" aria-hidden="true"></span>
+                            <input
+                                type="search"
+                                name="search"
+                                value="{{ $search }}"
+                                placeholder="Search events, programs, or categories"
+                                aria-label="Search gallery"
+                            >
+                        </div>
+                        <button type="submit">
+                            <span class="fas fa-search" aria-hidden="true"></span>
+                            <span>Search</span>
+                        </button>
+                        @if($search !== '')
+                            <a href="{{ route('gallery.index') }}" class="gaf-gallery-search-clear">Clear</a>
+                        @endif
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <section class="projects-page">
             <div class="container">
+                @if($search !== '')
+                    <div class="gaf-gallery-search-status">
+                        <p>Showing results for <span>{{ $search }}</span></p>
+                    </div>
+                @endif
                 <ul class="row list-unstyled">
                     @php
                         $layout = [

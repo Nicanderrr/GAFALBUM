@@ -15,10 +15,9 @@
     <title>Dashboard - GAFALBUM</title>
     <meta name="description" content="GAFALBUM user dashboard for gallery previews and paid downloads." />
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/helpest/assets/images/favicons/apple-touch-icon.png" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/helpest/assets/images/favicons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/helpest/assets/images/favicons/favicon-16x16.png" />
-    <link rel="manifest" href="/helpest/assets/images/favicons/site.webmanifest" />
+    <link rel="apple-touch-icon" href="/images/gaf.icon.png" />
+    <link rel="icon" type="image/png" href="/images/gaf.icon.png" />
+    <link rel="shortcut icon" href="/images/gaf.icon.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com/">
     <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
