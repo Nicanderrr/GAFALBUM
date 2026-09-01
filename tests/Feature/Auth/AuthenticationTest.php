@@ -79,6 +79,34 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(route('admin.dashboard', absolute: false));
     }
 
+    public function test_admin_login_ignores_stale_intended_user_dashboard_url(): void
+    {
+        $admin = User::factory()->create([
+            'is_admin' => true,
+        ]);
+
+        $response = $this
+            ->withSession(['url.intended' => route('dashboard', absolute: false)])
+            ->post('/admin', [
+                'service_number' => $admin->service_number,
+                'password' => 'password',
+            ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(route('admin.dashboard', absolute: false));
+    }
+
+    public function test_admins_are_redirected_from_user_dashboard_to_admin_dashboard(): void
+    {
+        $admin = User::factory()->create([
+            'is_admin' => true,
+        ]);
+
+        $response = $this->actingAs($admin)->get(route('dashboard'));
+
+        $response->assertRedirect(route('admin.dashboard', absolute: false));
+    }
+
     public function test_users_can_logout(): void
     {
         $user = User::factory()->create();

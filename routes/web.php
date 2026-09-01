@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/', '/dashboard');
 
 Route::get('/dashboard', function () {
+    if (auth()->user()?->is_admin) {
+        return redirect()->route('admin.dashboard');
+    }
+
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
