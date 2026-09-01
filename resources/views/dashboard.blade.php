@@ -5,6 +5,12 @@
     $categoryCount = \App\Models\Category::count();
     $dashboardHeroBg = \App\Models\SiteHero::urlFor('dashboard_background', '/helpest/assets/images/backgrounds/slider-2-1.jpg');
     $dashboardHeroForeground = \App\Models\SiteHero::urlFor('dashboard_foreground', '/helpest/assets/images/resources/main-slider-two-img-1-1.jpg');
+    $processImage1 = \App\Models\SiteHero::urlFor('dashboard_process_1', '/helpest/assets/images/resources/process-1-1.jpg');
+    $processImage2 = \App\Models\SiteHero::urlFor('dashboard_process_2', '/helpest/assets/images/resources/process-1-2.jpg');
+    $processImage3 = \App\Models\SiteHero::urlFor('dashboard_process_3', '/helpest/assets/images/resources/process-1-3.jpg');
+    $quickImage1 = \App\Models\SiteHero::urlFor('dashboard_quick_1', '/helpest/assets/images/services/services-2-1.jpg');
+    $quickImage2 = \App\Models\SiteHero::urlFor('dashboard_quick_2', '/helpest/assets/images/services/services-2-2.jpg');
+    $quickImage3 = \App\Models\SiteHero::urlFor('dashboard_quick_3', '/helpest/assets/images/services/services-2-3.jpg');
 @endphp
 
 <!DOCTYPE html>
@@ -51,16 +57,13 @@
     <link rel="stylesheet" href="/helpest/assets/css/responsive.css" />
     <link rel="stylesheet" href="/helpest/gaf-home.css" />
     <link rel="stylesheet" href="/helpest/gaf-dashboard.css" />
+    <x-site.screenshot-deterrents />
 </head>
 <body class="custom-cursor gaf-dashboard-page">
     <div class="custom-cursor__cursor"></div>
     <div class="custom-cursor__cursor-two"></div>
 
-    <div class="loader js-preloader">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <x-site.preloader />
 
     <div class="page-wrapper">
         <header class="main-header-two">
@@ -170,7 +173,7 @@
                         <div class="process-one__single-inner">
                             <div class="process-one__single">
                                 <div class="process-one__img">
-                                    <img src="/helpest/assets/images/resources/process-1-1.jpg" alt="">
+                                    <img src="{{ $processImage1 }}" alt="">
                                     <div class="process-one__icon"><span class="icon-search"></span></div>
                                 </div>
                                 <div class="process-one__shape-1"><img src="/helpest/assets/images/shapes/process-one-shape-1.png" alt=""></div>
@@ -187,7 +190,7 @@
                         <div class="process-one__single-inner">
                             <div class="process-one__single">
                                 <div class="process-one__img">
-                                    <img src="/helpest/assets/images/resources/process-1-2.jpg" alt="">
+                                    <img src="{{ $processImage2 }}" alt="">
                                     <div class="process-one__icon"><span class="icon-donation"></span></div>
                                 </div>
                                 <div class="process-one__shape-1"><img src="/helpest/assets/images/shapes/process-one-shape-2.png" alt=""></div>
@@ -204,7 +207,7 @@
                         <div class="process-one__single-inner">
                             <div class="process-one__single">
                                 <div class="process-one__img">
-                                    <img src="/helpest/assets/images/resources/process-1-3.jpg" alt="">
+                                    <img src="{{ $processImage3 }}" alt="">
                                     <div class="process-one__icon"><span class="icon-right-arrow"></span></div>
                                 </div>
                                 <div class="process-one__shape-1"><img src="/helpest/assets/images/shapes/process-one-shape-3.png" alt=""></div>
@@ -287,7 +290,7 @@
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="services-two__single">
                             <div class="services-two__img-box">
-                                <div class="services-two__img"><img src="/helpest/assets/images/services/services-2-1.jpg" alt=""></div>
+                                <div class="services-two__img"><img src="{{ $quickImage1 }}" alt=""></div>
                             </div>
                             <div class="services-two__content">
                                 <div class="services-two__icon-inner"><div class="services-two__icon"><span class="icon-search"></span></div></div>
@@ -300,7 +303,7 @@
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="services-two__single services-two__single-2">
                             <div class="services-two__img-box">
-                                <div class="services-two__img"><img src="/helpest/assets/images/services/services-2-2.jpg" alt=""></div>
+                                <div class="services-two__img"><img src="{{ $quickImage2 }}" alt=""></div>
                             </div>
                             <div class="services-two__content">
                                 <div class="services-two__icon-inner"><div class="services-two__icon"><span class="icon-donation"></span></div></div>
@@ -313,7 +316,7 @@
                     <div class="col-xl-4 col-lg-4 col-md-6">
                         <div class="services-two__single services-two__single-3">
                             <div class="services-two__img-box">
-                                <div class="services-two__img"><img src="/helpest/assets/images/services/services-2-3.jpg" alt=""></div>
+                                <div class="services-two__img"><img src="{{ $quickImage3 }}" alt=""></div>
                             </div>
                             <div class="services-two__content">
                                 <div class="services-two__icon-inner"><div class="services-two__icon"><span class="icon-user"></span></div></div>

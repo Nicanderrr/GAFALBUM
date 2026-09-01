@@ -40,12 +40,12 @@ class DashboardController extends Controller
             ->get();
 
         $categorySales = TransactionItem::query()
-            ->selectRaw('COALESCE(categories.name, ?) as label, COUNT(transaction_items.id) as files, SUM(transaction_items.amount) as amount', ['Uncategorized'])
+            ->selectRaw('COALESCE(MAX(categories.name), ?) as label, COUNT(transaction_items.id) as files, SUM(transaction_items.amount) as amount', ['Uncategorized'])
             ->join('transactions', 'transactions.id', '=', 'transaction_items.transaction_id')
             ->join('images', 'images.id', '=', 'transaction_items.image_id')
             ->leftJoin('categories', 'categories.id', '=', 'images.category_id')
             ->where('transactions.status', 'success')
-            ->groupByRaw('COALESCE(categories.name, ?)', ['Uncategorized'])
+            ->groupBy('images.category_id')
             ->orderByDesc('amount')
             ->get();
 

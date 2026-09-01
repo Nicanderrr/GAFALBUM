@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Process Mask Variants</title>
+  <style>
+    :root {
+      --bg: #0f1411;
+      --panel: #171d19;
+      --line: rgba(255,255,255,.10);
+      --text: #f3f4ef;
+      --muted: rgba(243,244,239,.72);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(87, 153, 95, .14), transparent 45%),
+        linear-gradient(180deg, #101612, #0c100d 70%);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 32px;
+    }
+    .wrap {
+      max-width: 1220px;
+      margin: 0 auto;
+    }
+    .head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .title {
+      font-size: clamp(28px, 4vw, 48px);
+      font-weight: 800;
+      margin: 0;
+      letter-spacing: .02em;
+    }
+    .subtitle {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 720px;
+      line-height: 1.5;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.35);
+    }
+    .label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      font-size: 13px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 28px;
+      height: 28px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      font-weight: 700;
+    }
+    .frame {
+      position: relative;
+      aspect-ratio: 1 / 1.15;
+      overflow: hidden;
+      background: #0a0d0b;
+      border-radius: 18px;
+    }
+    .frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .frame::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, transparent 35%, rgba(0,0,0,.32));
+      pointer-events: none;
+    }
+    .badge-ring {
+      position: absolute;
+      inset: 16px;
+      border: 2px solid rgba(255,255,255,.16);
+      border-radius: 999px;
+      pointer-events: none;
+      mix-blend-mode: screen;
+    }
+    .badge-ring.inner {
+      inset: 34px;
+      border-width: 1px;
+      opacity: .55;
+    }
+    .note {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .regiment .frame {
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 410 470'%3E%3Cpath fill='black' d='M205 18C250 18 291 28 323 44C334 49 341 60 341 72V168C341 260 290 339 205 454C120 339 69 260 69 168V72C69 60 76 49 87 44C119 28 160 18 205 18ZM205 58C177 58 147 64 121 75V170C121 242 156 306 205 362C254 306 289 242 289 170V75C263 64 233 58 205 58Z'/%3E%3C/svg%3E") center center / cover no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 410 470'%3E%3Cpath fill='black' d='M205 18C250 18 291 28 323 44C334 49 341 60 341 72V168C341 260 290 339 205 454C120 339 69 260 69 168V72C69 60 76 49 87 44C119 28 160 18 205 18ZM205 58C177 58 147 64 121 75V170C121 242 156 306 205 362C254 306 289 242 289 170V75C263 64 233 58 205 58Z'/%3E%3C/svg%3E") center center / cover no-repeat;
+    }
+    .rank .frame {
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 410 470'%3E%3Cpath fill='black' d='M76 124C76 115 83 108 92 108H318C327 108 334 115 334 124V160C334 167 338 174 344 177L365 188C373 192 378 200 378 209C378 218 373 226 365 230L344 241C338 244 334 251 334 258V346C334 355 327 362 318 362H92C83 362 76 355 76 346V258C76 251 72 244 66 241L45 230C37 226 32 218 32 209C32 200 37 192 45 188L66 177C72 174 76 167 76 160V124Z'/%3E%3Cpath fill='black' d='M112 150H298C306 150 312 156 312 164C312 172 306 178 298 178H112C104 178 98 172 98 164C98 156 104 150 112 150Z'/%3E%3Cpath fill='black' d='M112 192H284C292 192 298 198 298 206C298 214 292 220 284 220H112C104 220 98 214 98 206C98 198 104 192 112 192Z'/%3E%3Cpath fill='black' d='M112 234H268C276 234 282 240 282 248C282 256 276 262 268 262H112C104 262 98 256 98 248C98 240 104 234 112 234Z'/%3E%3C/svg%3E") center center / cover no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 410 470'%3E%3Cpath fill='black' d='M76 124C76 115 83 108 92 108H318C327 108 334 115 334 124V160C334 167 338 174 344 177L365 188C373 192 378 200 378 209C378 218 373 226 365 230L344 241C338 244 334 251 334 258V346C334 355 327 362 318 362H92C83 362 76 355 76 346V258C76 251 72 244 66 241L45 230C37 226 32 218 32 209C32 200 37 192 45 188L66 177C72 174 76 167 76 160V124Z'/%3E%3Cpath fill='black' d='M112 150H298C306 150 312 156 312 164C312 172 306 178 298 178H112C104 178 98 172 98 164C98 156 104 150 112 150Z'/%3E%3Cpath fill='black' d='M112 192H284C292 192 298 198 298 206C298 214 292 220 284 220H112C104 220 98 214 98 206C98 198 104 192 112 192Z'/%3E%3Cpath fill='black' d='M112 234H268C276 234 282 240 282 248C282 256 276 262 268 262H112C104 262 98 256 98 248C98 240 104 234 112 234Z'/%3E%3C/svg%3E") center center / cover no-repeat;
+    }
+    .crest .frame {
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 410 470'%3E%3Cpath fill='black' d='M205 18C242 18 275 25 303 37C315 43 322 55 322 68V166C322 255 279 330 205 454C131 330 88 255 88 166V68C88 55 95 43 107 37C135 25 168 18 205 18ZM205 62C182 62 157 67 135 76V168C135 241 167 302 205 355C243 302 275 241 275 168V76C253 67 228 62 205 62Z'/%3E%3Cpath fill='black' d='M171 154H239C247 154 253 160 253 168C253 176 247 182 239 182H171C163 182 157 176 157 168C157 160 163 154 171 154Z'/%3E%3Cpath fill='black' d='M163 198H247C255 198 261 204 261 212C261 220 255 226 247 226H163C155 226 149 220 149 212C149 204 155 198 163 198Z'/%3E%3C/svg%3E") center center / cover no-repeat;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 410 470'%3E%3Cpath fill='black' d='M205 18C242 18 275 25 303 37C315 43 322 55 322 68V166C322 255 279 330 205 454C131 330 88 255 88 166V68C88 55 95 43 107 37C135 25 168 18 205 18ZM205 62C182 62 157 67 135 76V168C135 241 167 302 205 355C243 302 275 241 275 168V76C253 67 228 62 205 62Z'/%3E%3Cpath fill='black' d='M171 154H239C247 154 253 160 253 168C253 176 247 182 239 182H171C163 182 157 176 157 168C157 160 163 154 171 154Z'/%3E%3Cpath fill='black' d='M163 198H247C255 198 261 204 261 212C261 220 255 226 247 226H163C155 226 149 220 149 212C149 204 155 198 163 198Z'/%3E%3C/svg%3E") center center / cover no-repeat;
+    }
+    @media (max-width: 980px) {
+      .grid { grid-template-columns: 1fr; }
+      .head { align-items: start; flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="head">
+      <div>
+        <h1 class="title">Military shape variants</h1>
+        <p class="subtitle">Same card, same photo, three different silhouette directions. Pick the one that feels most right for the Ghana Armed Forces context.</p>
+      </div>
+      <div class="badge">3</div>
+    </div>
+
+    <div class="grid">
+      <section class="card regiment">
+        <div class="label"><span>1. Regiment badge</span><span class="badge">A</span></div>
+        <div class="frame">
+          <img src="/helpest/assets/images/resources/process-1-1.jpg" alt="Variant 1">
+          <div class="badge-ring"></div>
+          <div class="badge-ring inner"></div>
+        </div>
+        <div class="note">Most formal. Reads like a service badge or ceremonial crest.</div>
+      </section>
+
+      <section class="card rank">
+        <div class="label"><span>2. Rank-tab frame</span><span class="badge">B</span></div>
+        <div class="frame">
+          <img src="/helpest/assets/images/resources/process-1-1.jpg" alt="Variant 2">
+        </div>
+        <div class="note">Sharper and more operational. Strong edges without looking decorative.</div>
+      </section>
+
+      <section class="card crest">
+        <div class="label"><span>3. Ceremonial crest</span><span class="badge">C</span></div>
+        <div class="frame">
+          <img src="/helpest/assets/images/resources/process-1-1.jpg" alt="Variant 3">
+        </div>
+        <div class="note">More traditional and authoritative. Good middle ground.</div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>

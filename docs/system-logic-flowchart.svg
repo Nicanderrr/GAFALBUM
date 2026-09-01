@@ -1,0 +1,212 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1180" viewBox="0 0 1600 1180">
+  <defs>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto" markerUnits="strokeWidth">
+      <path d="M2,2 L10,6 L2,10 Z" fill="#344054"/>
+    </marker>
+    <style>
+      .title { font: 700 34px Arial, sans-serif; fill: #101828; }
+      .lane { font: 700 18px Arial, sans-serif; fill: #344054; }
+      .node { fill: #ffffff; stroke: #4472c4; stroke-width: 2; rx: 8; }
+      .decision { fill: #fff7e6; stroke: #d9822b; stroke-width: 2; }
+      .admin { fill: #eef7ec; stroke: #43834f; stroke-width: 2; rx: 8; }
+      .payment { fill: #f1edff; stroke: #7357c8; stroke-width: 2; rx: 8; }
+      .data { fill: #f5f7fa; stroke: #667085; stroke-width: 2; rx: 8; }
+      .text { font: 15px Arial, sans-serif; fill: #101828; }
+      .small { font: 13px Arial, sans-serif; fill: #475467; }
+      .line { stroke: #344054; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .thin { stroke: #98a2b3; stroke-width: 1.5; fill: none; marker-end: url(#arrow); }
+      .label { font: 13px Arial, sans-serif; fill: #344054; font-weight: 700; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="1600" height="1180" fill="#f4f6f8"/>
+  <text x="60" y="60" class="title">GAF Album System Logic Flowchart</text>
+
+  <rect x="50" y="95" width="1500" height="160" fill="#ffffff" stroke="#d0d5dd" rx="10"/>
+  <text x="72" y="124" class="lane">Authentication and Access Control</text>
+
+  <rect x="100" y="155" width="170" height="54" class="node"/>
+  <text x="129" y="187" class="text">User opens app</text>
+
+  <polygon points="370,140 480,182 370,224 260,182" class="decision"/>
+  <text x="323" y="178" class="text">Authenticated?</text>
+  <text x="348" y="196" class="small">session exists</text>
+
+  <polygon points="610,140 720,182 610,224 500,182" class="decision"/>
+  <text x="572" y="178" class="text">Login type?</text>
+  <text x="553" y="196" class="small">user or admin</text>
+
+  <rect x="780" y="120" width="230" height="54" class="node"/>
+  <text x="817" y="153" class="text">Service number login</text>
+
+  <rect x="780" y="195" width="230" height="54" class="admin"/>
+  <text x="808" y="228" class="text">Admin password login</text>
+
+  <polygon points="1160,140 1280,182 1160,224 1040,182" class="decision"/>
+  <text x="1113" y="178" class="text">Valid account?</text>
+  <text x="1094" y="196" class="small">role check + rate limit</text>
+
+  <rect x="1350" y="120" width="150" height="54" class="node"/>
+  <text x="1383" y="153" class="text">User area</text>
+
+  <rect x="1350" y="195" width="150" height="54" class="admin"/>
+  <text x="1382" y="228" class="text">Admin area</text>
+
+  <path d="M270 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182 L260 182" opacity="0"/>
+  <path d="M270 182 L260 182" class="line"/>
+  <path d="M480 182 L500 182" class="line"/>
+  <path d="M720 170 L780 147" class="line"/>
+  <path d="M720 194 L780 222" class="line"/>
+  <path d="M1010 147 L1047 170" class="line"/>
+  <path d="M1010 222 L1047 194" class="line"/>
+  <path d="M1280 172 L1350 147" class="line"/>
+  <path d="M1280 194 L1350 222" class="line"/>
+  <text x="490" y="165" class="label">No</text>
+  <text x="482" y="214" class="label">Yes continues</text>
+
+  <rect x="50" y="295" width="700" height="780" fill="#ffffff" stroke="#d0d5dd" rx="10"/>
+  <text x="72" y="324" class="lane">User Gallery, Cart, Payment, and Download</text>
+
+  <rect x="105" y="360" width="190" height="58" class="node"/>
+  <text x="146" y="384" class="text">Dashboard</text>
+  <text x="129" y="403" class="small">authenticated user</text>
+
+  <rect x="105" y="460" width="190" height="58" class="node"/>
+  <text x="145" y="485" class="text">Browse gallery</text>
+  <text x="119" y="504" class="small">published events only</text>
+
+  <rect x="105" y="560" width="190" height="58" class="node"/>
+  <text x="138" y="585" class="text">Open event</text>
+  <text x="118" y="604" class="small">view event media files</text>
+
+  <polygon points="405,545 525,589 405,633 285,589" class="decision"/>
+  <text x="350" y="585" class="text">Purchased?</text>
+  <text x="347" y="604" class="small">success exists</text>
+
+  <rect x="575" y="470" width="125" height="58" class="node"/>
+  <text x="600" y="495" class="text">Download</text>
+  <text x="591" y="514" class="small">if allowed</text>
+
+  <rect x="575" y="610" width="125" height="58" class="node"/>
+  <text x="595" y="635" class="text">Add to cart</text>
+  <text x="585" y="654" class="small">or buy now</text>
+
+  <rect x="105" y="700" width="190" height="58" class="node"/>
+  <text x="143" y="725" class="text">Cart checkout</text>
+  <text x="121" y="744" class="small">load selected media</text>
+
+  <polygon points="405,685 525,729 405,773 285,729" class="decision"/>
+  <text x="361" y="725" class="text">Cart empty?</text>
+
+  <rect x="575" y="700" width="125" height="58" class="payment"/>
+  <text x="595" y="725" class="text">Paystack</text>
+  <text x="588" y="744" class="small">initialize</text>
+
+  <rect x="575" y="815" width="125" height="58" class="payment"/>
+  <text x="599" y="840" class="text">Callback</text>
+  <text x="592" y="859" class="small">verify ref</text>
+
+  <polygon points="405,800 525,844 405,888 285,844" class="decision"/>
+  <text x="350" y="840" class="text">Paid amount</text>
+  <text x="363" y="859" class="small">is valid?</text>
+
+  <rect x="105" y="925" width="190" height="58" class="data"/>
+  <text x="134" y="950" class="text">Successful purchase</text>
+  <text x="124" y="969" class="small">transaction + items</text>
+
+  <rect x="575" y="925" width="125" height="58" class="node"/>
+  <text x="600" y="950" class="text">File check</text>
+  <text x="590" y="969" class="small">403 / 404 / OK</text>
+
+  <path d="M200 418 L200 460" class="line"/>
+  <path d="M200 518 L200 560" class="line"/>
+  <path d="M295 589 L285 589" class="line"/>
+  <path d="M525 575 L575 505" class="line"/>
+  <path d="M525 605 L575 635" class="line"/>
+  <path d="M637 668 L637 700" class="line"/>
+  <path d="M200 618 L200 700" class="line"/>
+  <path d="M295 729 L285 729" class="line"/>
+  <path d="M525 729 L575 729" class="line"/>
+  <path d="M637 758 L637 815" class="line"/>
+  <path d="M575 844 L525 844" class="line"/>
+  <path d="M405 888 L235 925" class="line"/>
+  <path d="M295 954 L575 954" class="line"/>
+  <path d="M637 873 L637 925" class="line"/>
+  <text x="535" y="566" class="label">Yes</text>
+  <text x="535" y="626" class="label">No</text>
+  <text x="535" y="719" class="label">No</text>
+  <text x="337" y="908" class="label">Success</text>
+
+  <rect x="850" y="295" width="700" height="780" fill="#ffffff" stroke="#d0d5dd" rx="10"/>
+  <text x="872" y="324" class="lane">Admin Management</text>
+
+  <rect x="910" y="360" width="190" height="58" class="admin"/>
+  <text x="944" y="384" class="text">Admin dashboard</text>
+  <text x="932" y="403" class="small">is_admin required</text>
+
+  <polygon points="1210,345 1335,389 1210,433 1085,389" class="decision"/>
+  <text x="1162" y="385" class="text">Select module</text>
+
+  <rect x="910" y="485" width="190" height="58" class="admin"/>
+  <text x="938" y="510" class="text">Manage categories</text>
+  <text x="945" y="529" class="small">create / edit / delete</text>
+
+  <rect x="1160" y="485" width="190" height="58" class="admin"/>
+  <text x="1192" y="510" class="text">Manage events</text>
+  <text x="1188" y="529" class="small">upload / update media</text>
+
+  <rect x="1350" y="485" width="150" height="58" class="admin"/>
+  <text x="1381" y="510" class="text">Import events</text>
+  <text x="1373" y="529" class="small">spreadsheet rows</text>
+
+  <rect x="910" y="630" width="190" height="58" class="admin"/>
+  <text x="952" y="655" class="text">Manage users</text>
+  <text x="940" y="674" class="small">create / import / edit</text>
+
+  <rect x="1160" y="630" width="190" height="58" class="admin"/>
+  <text x="1198" y="655" class="text">Manage admins</text>
+  <text x="1190" y="674" class="small">admin account CRUD</text>
+
+  <rect x="1350" y="630" width="150" height="58" class="admin"/>
+  <text x="1377" y="655" class="text">Payments</text>
+  <text x="1366" y="674" class="small">filter transactions</text>
+
+  <rect x="910" y="775" width="190" height="58" class="admin"/>
+  <text x="950" y="800" class="text">Site settings</text>
+  <text x="922" y="819" class="small">heroes and protection</text>
+
+  <rect x="1160" y="775" width="190" height="58" class="admin"/>
+  <text x="1205" y="800" class="text">AI assistant</text>
+  <text x="1192" y="819" class="small">chat and analysis</text>
+
+  <polygon points="1210,905 1335,949 1210,993 1085,949" class="decision"/>
+  <text x="1166" y="945" class="text">Validation OK?</text>
+
+  <rect x="910" y="920" width="150" height="58" class="data"/>
+  <text x="954" y="945" class="text">Errors</text>
+  <text x="928" y="964" class="small">return to form</text>
+
+  <rect x="1360" y="920" width="140" height="58" class="data"/>
+  <text x="1387" y="945" class="text">Save data</text>
+  <text x="1375" y="964" class="small">database/storage</text>
+
+  <path d="M1100 389 L1085 389" class="line"/>
+  <path d="M1210 433 L1005 485" class="thin"/>
+  <path d="M1210 433 L1255 485" class="thin"/>
+  <path d="M1335 389 L1425 485" class="thin"/>
+  <path d="M1140 420 L1005 630" class="thin"/>
+  <path d="M1210 433 L1255 630" class="thin"/>
+  <path d="M1315 420 L1425 630" class="thin"/>
+  <path d="M1135 432 L1005 775" class="thin"/>
+  <path d="M1210 433 L1255 775" class="thin"/>
+  <path d="M1255 543 L1255 905" class="thin"/>
+  <path d="M1425 543 L1425 920" class="thin"/>
+  <path d="M1005 688 L1085 930" class="thin"/>
+  <path d="M1210 993 L1430 920" class="line"/>
+  <path d="M1085 949 L1060 949" class="line"/>
+  <text x="1342" y="915" class="label">Yes</text>
+  <text x="1057" y="936" class="label">No</text>
+
+  <rect x="50" y="1100" width="1500" height="52" fill="#ffffff" stroke="#d0d5dd" rx="8"/>
+  <text x="70" y="1132" class="small">Core rule: users can browse published gallery events, but media download is only allowed when the logged-in user owns a successful transaction item and the file exists in public storage.</text>
+</svg>

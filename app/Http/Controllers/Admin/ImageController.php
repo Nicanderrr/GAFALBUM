@@ -7,8 +7,15 @@ use App\Models\Category;
 use App\Models\Image;
 use App\Models\ImageMedia;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 class ImageController extends Controller
 {
@@ -261,5 +268,279 @@ class ImageController extends Controller
         $image->delete();
 
         return redirect()->route('admin.images.index')->with('success', 'Event deleted successfully.');
+    }
+
+    public function importTemplate()
+    {
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $sheet->setTitle('Events Import');
+        $sheet->fromArray([
+            ['title', 'description', 'category', 'price', 'status', 'media_paths', 'cover_media_path'],
+            [
+                'Passing Out Parade 2026',
+                'Graduation ceremony highlights and official parade moments.',
+                'Ceremonies',
+                '35.00',
+                'published',
+                'images/parade-01.jpg|images/parade-02.jpg|images/parade-clip-01.mp4',
+                'images/parade-01.jpg',
+            ],
+        ]);
+
+        $sheet->getStyle('A1:G1')->getFont()->setBold(true);
+        foreach (range('A', 'G') as $column) {
+            $sheet->getColumnDimension($column)->setAutoSize(true);
+        }
+
+        $tempPath = tempnam(sys_get_temp_dir(), 'gaf-import-template-');
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($tempPath);
+
+        return response()->download(
+            $tempPath,
+            'gafalbum-events-import-template.xlsx',
+            ['Content-Type' => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet']
+        )->deleteFileAfterSend(true);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'import_file' => 'required|file|mimes:xlsx,xls,csv,txt|max:20480',
+        ]);
+
+        $result = $this->importSpreadsheet($request->file('import_file'));
+
+        $message = "{$result['imported']} event(s) imported successfully.";
+        if ($result['skipped'] > 0) {
+            $message .= " {$result['skipped']} row(s) were skipped.";
+        }
+
+        return redirect()
+            ->route('admin.images.index')
+            ->with('success', $message)
+            ->with('import_report', $result);
+    }
+
+    protected function importSpreadsheet(UploadedFile $file): array
+    {
+        $spreadsheet = IOFactory::load($file->getRealPath());
+        $rows = $spreadsheet->getActiveSheet()->toArray(null, true, true, true);
+
+        if (count($rows) < 2) {
+            return [
+                'imported' => 0,
+                'skipped' => 0,
+                'errors' => ['The spreadsheet has no data rows.'],
+            ];
+        }
+
+        $headers = $this->normalizeImportHeaders(array_shift($rows));
+        $imported = 0;
+        $skipped = 0;
+        $errors = [];
+
+        foreach ($rows as $sheetRowNumber => $row) {
+            $rowNumber = $sheetRowNumber;
+            $payload = $this->mapImportRow($headers, $row);
+
+            if ($this->rowIsEmpty($payload)) {
+                continue;
+            }
+
+            $validation = $this->validateImportRow($payload, $rowNumber);
+            if ($validation['errors']) {
+                $skipped++;
+                $errors[] = implode(' ', $validation['errors']);
+                continue;
+            }
+
+            DB::transaction(function () use ($validation) {
+                $this->createImportedImage($validation['data']);
+            });
+
+            $imported++;
+        }
+
+        return compact('imported', 'skipped', 'errors');
+    }
+
+    protected function normalizeImportHeaders(array $headerRow): array
+    {
+        return collect($headerRow)
+            ->mapWithKeys(fn ($value, $column) => [$column => Str::of((string) $value)->trim()->lower()->replace([' ', '-'], '_')->toString()])
+            ->all();
+    }
+
+    protected function mapImportRow(array $headers, array $row): array
+    {
+        $mapped = [];
+
+        foreach ($row as $column => $value) {
+            $header = $headers[$column] ?? null;
+            if ($header) {
+                $mapped[$header] = is_string($value) ? trim($value) : $value;
+            }
+        }
+
+        return $mapped;
+    }
+
+    protected function rowIsEmpty(array $payload): bool
+    {
+        return collect($payload)->every(fn ($value) => $value === null || $value === '');
+    }
+
+    protected function validateImportRow(array $payload, int $rowNumber): array
+    {
+        $errors = [];
+        $title = trim((string) ($payload['title'] ?? ''));
+        $description = trim((string) ($payload['description'] ?? '')) ?: null;
+        $categoryName = trim((string) ($payload['category'] ?? ''));
+        $status = Str::lower(trim((string) ($payload['status'] ?? 'published')));
+        $price = $payload['price'] ?? null;
+        $mediaPaths = $this->parseMediaPaths($payload['media_paths'] ?? '');
+        $coverPath = $this->normalizeImportMediaPath($payload['cover_media_path'] ?? '');
+
+        if ($title === '') {
+            $errors[] = "Row {$rowNumber}: title is required.";
+        }
+
+        if (! is_numeric($price) || (float) $price < 0) {
+            $errors[] = "Row {$rowNumber}: price must be a valid non-negative number.";
+        }
+
+        if (! in_array($status, ['draft', 'published', 'archived'], true)) {
+            $errors[] = "Row {$rowNumber}: status must be draft, published, or archived.";
+        }
+
+        if ($mediaPaths->isEmpty()) {
+            $errors[] = "Row {$rowNumber}: media_paths must contain at least one file path.";
+        }
+
+        if ($mediaPaths->isNotEmpty()) {
+            $missing = $mediaPaths->filter(fn ($path) => ! Storage::disk('public')->exists($path))->values();
+            if ($missing->isNotEmpty()) {
+                $errors[] = "Row {$rowNumber}: these media files were not found on the public disk: ".$missing->implode(', ').'.';
+            }
+        }
+
+        $typedMedia = $mediaPaths->map(function ($path) {
+            return [
+                'path' => $path,
+                'type' => $this->detectMediaType($path),
+            ];
+        })->values();
+
+        $imageMedia = $typedMedia->where('type', 'image')->values();
+        if ($imageMedia->isEmpty()) {
+            $errors[] = "Row {$rowNumber}: at least one referenced media file must be an image for the thumbnail.";
+        }
+
+        if ($coverPath !== '') {
+            if (! $mediaPaths->contains($coverPath)) {
+                $errors[] = "Row {$rowNumber}: cover_media_path must match one of the values in media_paths.";
+            } elseif ($this->detectMediaType($coverPath) !== 'image') {
+                $errors[] = "Row {$rowNumber}: cover_media_path must point to an image file.";
+            }
+        }
+
+        return [
+            'errors' => $errors,
+            'data' => [
+                'title' => $title,
+                'description' => $description,
+                'category_name' => $categoryName,
+                'price' => (float) $price,
+                'status' => $status,
+                'media' => $typedMedia,
+                'cover_path' => $coverPath !== '' ? $coverPath : ($imageMedia->first()['path'] ?? null),
+            ],
+        ];
+    }
+
+    protected function parseMediaPaths(mixed $value): Collection
+    {
+        return collect(preg_split('/[\r\n|,]+/', (string) $value) ?: [])
+            ->map(fn ($path) => $this->normalizeImportMediaPath($path))
+            ->filter()
+            ->values();
+    }
+
+    protected function normalizeImportMediaPath(mixed $path): string
+    {
+        $path = trim((string) $path);
+
+        if ($path === '') {
+            return '';
+        }
+
+        $path = str_replace('\\', '/', $path);
+
+        if (Str::startsWith($path, url('/storage/'))) {
+            $path = Str::after($path, url('/storage/'));
+        } elseif (Str::startsWith($path, ['/storage/', 'storage/'])) {
+            $path = ltrim(Str::after($path, 'storage/'), '/');
+        } else {
+            $publicRoot = str_replace('\\', '/', storage_path('app/public/'));
+            if (Str::startsWith($path, $publicRoot)) {
+                $path = ltrim(Str::after($path, $publicRoot), '/');
+            }
+        }
+
+        return ltrim($path, '/');
+    }
+
+    protected function detectMediaType(string $path): string
+    {
+        $extension = Str::lower(pathinfo($path, PATHINFO_EXTENSION));
+
+        return in_array($extension, ['mp4', 'mov', 'avi', 'webm'], true) ? 'video' : 'image';
+    }
+
+    protected function createImportedImage(array $data): Image
+    {
+        $categoryId = null;
+        if ($data['category_name'] !== '') {
+            $category = Category::firstOrCreate(
+                ['slug' => Str::slug($data['category_name']) ?: Str::lower(Str::random(8))],
+                ['name' => $data['category_name']]
+            );
+
+            if ($category->name !== $data['category_name']) {
+                $category->update(['name' => $data['category_name']]);
+            }
+
+            $categoryId = $category->id;
+        }
+
+        $image = Image::create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'category_id' => $categoryId,
+            'price' => $data['price'],
+            'status' => $data['status'],
+            'file_path' => $data['cover_path'],
+            'thumbnail_path' => $data['cover_path'],
+            'admin_id' => auth()->id(),
+            'published_at' => $data['status'] === 'published' ? now() : null,
+        ]);
+
+        foreach ($data['media'] as $index => $media) {
+            $createdMedia = $image->media()->create([
+                'file_path' => $media['path'],
+                'media_type' => $media['type'],
+                'sort_order' => $index,
+            ]);
+
+            if ($media['path'] === $data['cover_path']) {
+                $image->cover_media_id = $createdMedia->id;
+            }
+        }
+
+        $image->save();
+
+        return $image;
     }
 }

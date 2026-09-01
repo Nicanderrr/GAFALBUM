@@ -54,20 +54,22 @@
     <link rel="stylesheet" href="/helpest/assets/css/responsive.css" />
     <link rel="stylesheet" href="/helpest/gaf-home.css" />
     <link rel="stylesheet" href="/helpest/gaf-gallery-projects.css" />
+    <x-site.screenshot-deterrents />
 </head>
 <body class="custom-cursor gaf-projects-gallery">
-    @php
-        $galleryHero = \App\Models\SiteHero::urlFor('gallery', '/helpest/assets/images/backgrounds/page-header-bg.jpg');
+@php
+    use App\Support\PreviewMedia;
+
+    $galleryHero = \App\Models\SiteHero::urlFor('gallery', '/helpest/assets/images/backgrounds/page-header-bg.jpg');
         $search = $search ?? '';
+        $categoryId = $categoryId ?? null;
+        $sort = $sort ?? 'featured';
+        $activeFilterCount = ($search !== '' ? 1 : 0) + ($categoryId ? 1 : 0) + ($sort !== 'featured' ? 1 : 0);
     @endphp
     <div class="custom-cursor__cursor"></div>
     <div class="custom-cursor__cursor-two"></div>
 
-    <div class="loader js-preloader">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <x-site.preloader />
 
     <div class="page-wrapper">
         <header class="main-header">
@@ -153,24 +155,71 @@
         <div class="gaf-gallery-search-overlap">
             <div class="container">
                 <div class="gaf-gallery-search-shell">
-                    <form method="GET" action="{{ route('gallery.index') }}" class="gaf-gallery-search-form{{ $search !== '' ? ' is-active' : '' }}">
-                        <div class="gaf-gallery-search-input">
-                            <span class="fas fa-search" aria-hidden="true"></span>
-                            <input
-                                type="search"
-                                name="search"
-                                value="{{ $search }}"
-                                placeholder="Search events, programs, or categories"
-                                aria-label="Search gallery"
-                            >
+                    <form method="GET" action="{{ route('gallery.index') }}" class="gaf-gallery-filters{{ $activeFilterCount > 0 ? ' is-active' : '' }}">
+                        <div class="gaf-gallery-filter-card gaf-gallery-filter-card--search{{ $search !== '' ? ' is-open' : '' }}">
+                            <button type="button" class="gaf-gallery-filter-trigger" aria-label="Search filter">
+                                <span class="fas fa-search" aria-hidden="true"></span>
+                            </button>
+                            <div class="gaf-gallery-filter-panel">
+                                <div class="gaf-gallery-filter-label">Search</div>
+                                <div class="gaf-gallery-filter-input">
+                                    <span class="fas fa-search" aria-hidden="true"></span>
+                                    <input
+                                        type="search"
+                                        name="search"
+                                        value="{{ $search }}"
+                                        placeholder="Search events, programs, or categories"
+                                        aria-label="Search gallery"
+                                    >
+                                </div>
+                            </div>
                         </div>
-                        <button type="submit">
-                            <span class="fas fa-search" aria-hidden="true"></span>
-                            <span>Search</span>
-                        </button>
-                        @if($search !== '')
-                            <a href="{{ route('gallery.index') }}" class="gaf-gallery-search-clear">Clear</a>
-                        @endif
+
+                        <div class="gaf-gallery-filter-card gaf-gallery-filter-card--category{{ $categoryId ? ' is-open' : '' }}">
+                            <button type="button" class="gaf-gallery-filter-trigger" aria-label="Category filter">
+                                <span class="fas fa-layer-group" aria-hidden="true"></span>
+                            </button>
+                            <div class="gaf-gallery-filter-panel">
+                                <div class="gaf-gallery-filter-label">Category</div>
+                                <div class="gaf-gallery-select-wrap">
+                                    <select id="gallery-category" name="category" class="ignore gaf-gallery-native-select" aria-label="Filter by category">
+                                        <option value="">All categories</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}" @selected((int) $categoryId === $category->id)>{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="gaf-gallery-filter-card gaf-gallery-filter-card--sort{{ $sort !== 'featured' ? ' is-open' : '' }}">
+                            <button type="button" class="gaf-gallery-filter-trigger" aria-label="Sort filter">
+                                <span class="fas fa-sliders-h" aria-hidden="true"></span>
+                            </button>
+                            <div class="gaf-gallery-filter-panel">
+                                <div class="gaf-gallery-filter-label">Sort</div>
+                                <div class="gaf-gallery-select-wrap">
+                                    <select id="gallery-sort" name="sort" class="ignore gaf-gallery-native-select" aria-label="Sort gallery">
+                                        <option value="featured" @selected($sort === 'featured')>Featured</option>
+                                        <option value="newest" @selected($sort === 'newest')>Newest</option>
+                                        <option value="oldest" @selected($sort === 'oldest')>Oldest</option>
+                                        <option value="price_low" @selected($sort === 'price_low')>Price: Low to High</option>
+                                        <option value="price_high" @selected($sort === 'price_high')>Price: High to Low</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="gaf-gallery-filter-actions">
+                            <div class="gaf-gallery-filter-summary">
+                                <strong>{{ $images->total() }}</strong>
+                                <span>{{ $images->total() === 1 ? 'event' : 'events' }}</span>
+                            </div>
+                            <button type="submit" class="gaf-gallery-filter-apply">Apply</button>
+                            @if($activeFilterCount > 0)
+                                <a href="{{ route('gallery.index') }}" class="gaf-gallery-search-clear">Reset</a>
+                            @endif
+                        </div>
                     </form>
                 </div>
             </div>
@@ -178,9 +227,36 @@
 
         <section class="projects-page">
             <div class="container">
-                @if($search !== '')
+                @if(session('download_unlocked'))
+                    @php
+                        $unlocked = session('download_unlocked');
+                    @endphp
+                    <div class="gaf-unlock-banner">
+                        <div class="gaf-unlock-banner__copy">
+                            <p class="gaf-unlock-banner__kicker">Download unlocked</p>
+                            <strong>{{ $unlocked['title'] }}</strong>
+                            <span>{{ $unlocked['event'] }} · {{ $unlocked['price'] }}</span>
+                        </div>
+                        <a href="{{ $unlocked['download_url'] }}" class="gaf-unlock-banner__cta">
+                            <span class="fas fa-download"></span>
+                            Download Now
+                        </a>
+                    </div>
+                @endif
+
+                @if($search !== '' || $categoryId || $sort !== 'featured')
                     <div class="gaf-gallery-search-status">
-                        <p>Showing results for <span>{{ $search }}</span></p>
+                        <p>
+                            Showing
+                            @if($search !== '')
+                                results for <span>{{ $search }}</span>
+                            @else
+                                <span>{{ $images->total() }}</span> curated gallery items
+                            @endif
+                            @if($categoryId)
+                                in <span>{{ optional($categories->firstWhere('id', (int) $categoryId))->name }}</span>
+                            @endif
+                        </p>
                     </div>
                 @endif
                 <ul class="row list-unstyled">
@@ -198,7 +274,7 @@
 
                     @forelse($images as $image)
                         @php
-                            $mediaUrl = Storage::url($image->cover_path);
+                            $mediaUrl = PreviewMedia::url($image->cover_path);
                             $category = $image->category->name ?? 'Gallery';
                             $popupItems = $image->media->where('media_type', 'image')->shuffle()->values();
                             if ($popupItems->isEmpty()) {
@@ -213,27 +289,26 @@
                                         @foreach($popupItems as $popupMedia)
                                             @php
                                                 $purchaseItemId = isset($popupMedia->id) ? $purchasedItems->get($popupMedia->id) : null;
+                                                $popupCartAction = isset($popupMedia->id) ? route('cart.items.store', $popupMedia->id) : null;
+                                                $popupPaymentAction = isset($popupMedia->id) ? route('payments.media.checkout', $popupMedia->id) : null;
+                                                $popupDownloadAction = $purchaseItemId ? route('purchases.download', $purchaseItemId) : null;
                                             @endphp
                                             <a
                                                 class="img-popup gaf-project-popup {{ $loop->first ? '' : 'gaf-hidden-event-popup' }}"
-                                                href="{{ Storage::url($popupMedia->file_path) }}"
+                                                href="{{ PreviewMedia::url($popupMedia->file_path) }}"
                                                 title="{{ $image->title }} - Photo {{ $loop->iteration }}"
                                                 data-cart-title="{{ $image->title }} - Photo {{ $loop->iteration }}"
+                                                data-cart-event="{{ $image->title }}"
                                                 data-cart-price="GHS {{ number_format($image->price, 2) }}"
                                                 data-download-title="{{ $image->title }} - Photo {{ $loop->iteration }}"
+                                                data-download-event="{{ $image->title }}"
                                                 data-download-price="GHS {{ number_format($image->price, 2) }}"
-                                                @if(isset($popupMedia->id))
-                                                    data-cart-action="{{ route('cart.items.store', $popupMedia->id) }}"
-                                                    data-payment-action="{{ route('payments.media.checkout', $popupMedia->id) }}"
-                                                @endif
-                                                @if($purchaseItemId)
-                                                    data-download-action="{{ route('purchases.download', $purchaseItemId) }}"
-                                                @endif
+                                                data-cart-action="{{ $popupCartAction }}"
+                                                data-payment-action="{{ $popupPaymentAction }}"
+                                                data-download-action="{{ $popupDownloadAction }}"
                                                 data-group="{{ $image->id }}"
                                             >
-                                                @if($loop->first)
-                                            <span class="fas fa-plus"></span>
-                                                @endif
+                                                {!! $loop->first ? '<span class="fas fa-plus"></span>' : '' !!}
                                         </a>
                                         @endforeach
                                         <a class="gaf-project-title" href="{{ route('gallery.show', $image->id) }}">
@@ -399,13 +474,16 @@
             <h3 id="gaf-download-modal-title">Unlock clean download</h3>
             <p class="gaf-download-modal__copy">This preview is protected. Pay with Paystack to unlock the clean file.</p>
             <div class="gaf-download-modal__summary">
-                <strong data-download-modal-title>Selected file</strong>
+                <div class="gaf-download-modal__summary-copy">
+                    <strong data-download-modal-title>Selected file</strong>
+                    <small data-download-modal-event>Gallery event</small>
+                </div>
                 <span data-download-modal-price></span>
             </div>
             <div class="gaf-download-modal__actions">
                 <form method="POST" data-download-modal-form>
                     @csrf
-                    <button type="submit">Pay</button>
+                    <button type="submit" data-download-modal-submit>Pay now</button>
                 </form>
                 <a href="{{ route('cart.index') }}">Go to Cart</a>
             </div>
@@ -498,8 +576,12 @@
         const price = document.createElement('span');
         price.textContent = trigger.dataset.cartPrice || '';
 
+        const meta = document.createElement('small');
+        meta.textContent = (trigger.dataset.cartEvent || '') + (trigger.dataset.cartPrice ? ' · ' + trigger.dataset.cartPrice : '');
+
         const button = document.createElement('button');
         button.type = 'submit';
+        button.className = 'gaf-lightbox-cart-secondary';
         button.innerHTML = '<span class="icon-shopping-cart"></span> Add to Cart';
 
         const token = document.createElement('input');
@@ -512,22 +594,24 @@
 
         const download = document.createElement(trigger.dataset.downloadAction ? 'a' : 'button');
         download.className = 'gaf-lightbox-download';
-        download.innerHTML = '<span class="fas fa-download"></span> Download';
+        download.innerHTML = '<span class="fas fa-bolt"></span> Pay & Unlock';
 
         if (trigger.dataset.downloadAction) {
           download.href = trigger.dataset.downloadAction;
+          download.innerHTML = '<span class="fas fa-download"></span> Download';
         } else {
           download.type = 'button';
           download.dataset.title = trigger.dataset.downloadTitle || trigger.dataset.cartTitle || 'Selected photo';
+          download.dataset.event = trigger.dataset.downloadEvent || trigger.dataset.cartEvent || '';
           download.dataset.price = trigger.dataset.downloadPrice || trigger.dataset.cartPrice || '';
           download.dataset.cartAction = trigger.dataset.cartAction;
           download.dataset.paymentAction = trigger.dataset.paymentAction;
           download.classList.add('gaf-open-download-modal');
         }
 
-        info.append(title, price);
+        info.append(title, meta);
         form.append(token, button);
-        actions.append(form, download);
+        actions.append(download, form);
         wrap.append(info, actions);
         panel.innerHTML = '';
         panel.appendChild(wrap);
@@ -590,7 +674,9 @@
           const modal = document.getElementById('gaf-download-modal');
           const form = document.querySelector('[data-download-modal-form]');
           const title = document.querySelector('[data-download-modal-title]');
+          const eventLine = document.querySelector('[data-download-modal-event]');
           const price = document.querySelector('[data-download-modal-price]');
+          const submit = document.querySelector('[data-download-modal-submit]');
 
           event.preventDefault();
           event.stopPropagation();
@@ -598,7 +684,13 @@
           if (modal && form && title && price) {
             form.action = trigger.dataset.paymentAction || trigger.dataset.cartAction;
             title.textContent = trigger.dataset.title || 'Selected file';
+            if (eventLine) {
+              eventLine.textContent = trigger.dataset.event || trigger.dataset.downloadEvent || trigger.dataset.cartEvent || 'Gallery event';
+            }
             price.textContent = trigger.dataset.price || '';
+            if (submit) {
+              submit.textContent = trigger.dataset.price ? 'Pay ' + trigger.dataset.price : 'Pay now';
+            }
             modal.classList.add('is-visible');
             modal.setAttribute('aria-hidden', 'false');
           }
@@ -651,7 +743,9 @@
       const downloadModal = document.getElementById('gaf-download-modal');
       const downloadModalForm = document.querySelector('[data-download-modal-form]');
       const downloadModalTitle = document.querySelector('[data-download-modal-title]');
+      const downloadModalEvent = document.querySelector('[data-download-modal-event]');
       const downloadModalPrice = document.querySelector('[data-download-modal-price]');
+      const downloadModalSubmit = document.querySelector('[data-download-modal-submit]');
 
       document.addEventListener('click', function (event) {
         const trigger = event.target.closest('.gaf-open-download-modal');
@@ -659,7 +753,13 @@
         if (trigger && downloadModal && downloadModalForm) {
           downloadModalForm.action = trigger.dataset.paymentAction || trigger.dataset.cartAction;
           downloadModalTitle.textContent = trigger.dataset.title || 'Selected file';
+          if (downloadModalEvent) {
+            downloadModalEvent.textContent = trigger.dataset.event || trigger.dataset.downloadEvent || trigger.dataset.cartEvent || 'Gallery event';
+          }
           downloadModalPrice.textContent = trigger.dataset.price || '';
+          if (downloadModalSubmit) {
+            downloadModalSubmit.textContent = trigger.dataset.price ? 'Pay ' + trigger.dataset.price : 'Pay now';
+          }
           downloadModal.classList.add('is-visible');
           downloadModal.setAttribute('aria-hidden', 'false');
           return;

@@ -5,7 +5,7 @@
 
     <div class="welcome-banner">
         <h2>Create New User</h2>
-        <p>A password will be automatically generated and emailed to the user.</p>
+        <p>A password will be automatically generated. Email is optional.</p>
     </div>
 
     <div class="data-table-container" style="max-width: 600px;">
@@ -21,8 +21,8 @@
             </div>
 
             <div style="margin-bottom: 1rem;">
-                <label for="email" style="display: block; font-size: 0.9rem; font-weight: 500; color: #1e293b; margin-bottom: 0.5rem;">Email Address</label>
-                <input type="email" id="email" name="email" value="{{ old('email') }}" required style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ef4444'" onblur="this.style.borderColor='#e2e8f0'">
+                <label for="email" style="display: block; font-size: 0.9rem; font-weight: 500; color: #1e293b; margin-bottom: 0.5rem;">Email Address (Optional)</label>
+                <input type="email" id="email" name="email" value="{{ old('email') }}" style="width: 100%; padding: 0.75rem; border: 1px solid #e2e8f0; border-radius: 0.5rem; outline: none; transition: border-color 0.2s;" onfocus="this.style.borderColor='#ef4444'" onblur="this.style.borderColor='#e2e8f0'">
                 @error('email')
                     <span style="color: #ef4444; font-size: 0.8rem;">{{ $message }}</span>
                 @enderror
@@ -37,7 +37,7 @@
             </div>
 
             <button type="submit" style="width: 100%; padding: 0.875rem; background-color: #ef4444; color: white; font-weight: 600; border: none; border-radius: 0.5rem; cursor: pointer; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#dc2626'" onmouseout="this.style.backgroundColor='#ef4444'">
-                Create User & Send Email
+                Create User
             </button>
         </form>
     </div>

@@ -1,4 +1,6 @@
 @php
+    use App\Support\PreviewMedia;
+
     $mediaItems = $image->media->isNotEmpty()
         ? $image->media->shuffle()->values()
         : collect([(object) ['file_path' => $image->file_path, 'media_type' => 'image']]);
@@ -27,6 +29,7 @@
     <link rel="stylesheet" href="/helpest/gaf-home.css" />
     <link rel="stylesheet" href="/helpest/gaf-gallery-projects.css" />
     <link rel="stylesheet" href="/helpest/gaf-event-detail.css" />
+    <x-site.screenshot-deterrents />
 </head>
 <body class="custom-cursor gaf-projects-gallery gaf-event-detail-page">
     <div class="page-wrapper">
@@ -83,7 +86,7 @@
             </nav>
         </header>
 
-        <section class="gaf-event-hero" style="background-image: url('{{ Storage::url($coverPath) }}');">
+        <section class="gaf-event-hero" style="background-image: url('{{ PreviewMedia::url($coverPath) }}');">
             <div class="gaf-event-hero__media">
             </div>
             <div class="container">
@@ -106,6 +109,22 @@
                 @if(session('success'))
                     <div class="gaf-event-alert">{{ session('success') }}</div>
                 @endif
+                @if(session('download_unlocked'))
+                    @php
+                        $unlocked = session('download_unlocked');
+                    @endphp
+                    <div class="gaf-unlock-banner">
+                        <div class="gaf-unlock-banner__copy">
+                            <p class="gaf-unlock-banner__kicker">Download unlocked</p>
+                            <strong>{{ $unlocked['title'] }}</strong>
+                            <span>{{ $unlocked['event'] }} · {{ $unlocked['price'] }}</span>
+                        </div>
+                        <a href="{{ $unlocked['download_url'] }}" class="gaf-unlock-banner__cta">
+                            <span class="fas fa-download"></span>
+                            Download Now
+                        </a>
+                    </div>
+                @endif
 
                 <div class="gaf-event-store__head">
                     <div>
@@ -126,9 +145,9 @@
                         <article class="gaf-event-card">
                             <div class="gaf-event-card__preview">
                                 @if($media->media_type === 'video')
-                                    <video src="{{ Storage::url($media->file_path) }}" controls preload="metadata"></video>
+                                    <video src="{{ asset(Storage::url($media->file_path)) }}" controls preload="metadata"></video>
                                 @else
-                                    <img src="{{ Storage::url($media->file_path) }}" alt="{{ $image->title }} file {{ $loop->iteration }}">
+                                    <img src="{{ PreviewMedia::url($media->file_path) }}" alt="{{ $image->title }} file {{ $loop->iteration }}">
                                 @endif
                                 <div class="gaf-event-card__label">
                                     <span>{{ str_pad((string) $loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
@@ -141,7 +160,7 @@
                                         <div class="gaf-event-card__actions">
                                             <form method="POST" action="{{ route('cart.items.store', $media->id) }}">
                                                 @csrf
-                                                <button type="submit">
+                                                <button type="submit" class="gaf-event-cart-btn">
                                                     <span class="icon-shopping-cart"></span>
                                                     Add to Cart
                                                 </button>
@@ -152,17 +171,13 @@
                                                     Download
                                                 </a>
                                             @else
-                                                <button
-                                                    type="button"
-                                                    class="gaf-event-download-btn gaf-open-download-modal"
-                                                    data-title="{{ $image->title }} - {{ $media->media_type === 'video' ? 'Video' : 'Photo' }} {{ $loop->iteration }}"
-                                                    data-price="GHS {{ number_format($image->price, 2) }}"
-                                                    data-cart-action="{{ route('cart.items.store', $media->id) }}"
-                                                    data-payment-action="{{ route('payments.media.checkout', $media->id) }}"
-                                                >
-                                                    <span class="fas fa-download"></span>
-                                                    Download
-                                                </button>
+                                                <form method="POST" action="{{ route('payments.media.checkout', $media->id) }}">
+                                                    @csrf
+                                                    <button type="submit" class="gaf-event-pay-btn">
+                                                        <span class="fas fa-bolt"></span>
+                                                        Pay & Unlock
+                                                    </button>
+                                                </form>
                                             @endif
                                         </div>
                                     @endif
@@ -183,13 +198,16 @@
             <h3 id="gaf-download-modal-title">Unlock clean download</h3>
             <p class="gaf-download-modal__copy">This preview is protected. Pay with Paystack to unlock the clean file.</p>
             <div class="gaf-download-modal__summary">
-                <strong data-download-modal-title>Selected file</strong>
+                <div class="gaf-download-modal__summary-copy">
+                    <strong data-download-modal-title>Selected file</strong>
+                    <small data-download-modal-event>Gallery event</small>
+                </div>
                 <span data-download-modal-price></span>
             </div>
             <div class="gaf-download-modal__actions">
                 <form method="POST" data-download-modal-form>
                     @csrf
-                    <button type="submit">Pay</button>
+                    <button type="submit" data-download-modal-submit>Pay now</button>
                 </form>
                 <a href="{{ route('cart.index') }}">Go to Cart</a>
             </div>
@@ -202,7 +220,9 @@
         const downloadModal = document.getElementById('gaf-download-modal');
         const downloadModalForm = document.querySelector('[data-download-modal-form]');
         const downloadModalTitle = document.querySelector('[data-download-modal-title]');
+        const downloadModalEvent = document.querySelector('[data-download-modal-event]');
         const downloadModalPrice = document.querySelector('[data-download-modal-price]');
+        const downloadModalSubmit = document.querySelector('[data-download-modal-submit]');
 
         document.addEventListener('click', function (event) {
             const trigger = event.target.closest('.gaf-open-download-modal');
@@ -210,7 +230,13 @@
             if (trigger && downloadModal && downloadModalForm) {
                 downloadModalForm.action = trigger.dataset.paymentAction;
                 downloadModalTitle.textContent = trigger.dataset.title || 'Selected file';
+                if (downloadModalEvent) {
+                    downloadModalEvent.textContent = trigger.dataset.event || 'Gallery event';
+                }
                 downloadModalPrice.textContent = trigger.dataset.price || '';
+                if (downloadModalSubmit) {
+                    downloadModalSubmit.textContent = trigger.dataset.price ? 'Pay ' + trigger.dataset.price : 'Pay now';
+                }
                 downloadModal.classList.add('is-visible');
                 downloadModal.setAttribute('aria-hidden', 'false');
                 return;

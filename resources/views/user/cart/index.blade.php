@@ -1,4 +1,6 @@
 @php
+    use App\Support\PreviewMedia;
+
     $cartHero = \App\Models\SiteHero::urlFor('cart', '/helpest/assets/images/backgrounds/page-header-bg.jpg');
 @endphp
 
@@ -43,16 +45,13 @@
     <link rel="stylesheet" href="/helpest/assets/css/responsive.css" />
     <link rel="stylesheet" href="/helpest/gaf-home.css" />
     <link rel="stylesheet" href="/helpest/gaf-cart.css" />
+    <x-site.screenshot-deterrents />
 </head>
 <body class="custom-cursor gaf-cart-page">
     <div class="custom-cursor__cursor"></div>
     <div class="custom-cursor__cursor-two"></div>
 
-    <div class="loader js-preloader">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <x-site.preloader />
 
     <div class="page-wrapper">
         <header class="main-header">
@@ -169,7 +168,7 @@
                                                 <td>
                                                     <div class="product-box">
                                                         <div class="img-box">
-                                                            <img src="{{ Storage::url($item->media->file_path) }}" alt="{{ $item->image->title }}">
+                                                            <img src="{{ PreviewMedia::url($item->media->file_path) }}" alt="{{ $item->image->title }}">
                                                         </div>
                                                         <h3><a href="{{ route('gallery.show', $item->image) }}">{{ $item->image->title }}</a></h3>
                                                     </div>
@@ -250,13 +249,7 @@
                                             <span class="cart-total-amount">GHS {{ number_format($cartItems->sum('amount'), 2) }}</span>
                                         </li>
                                     </ul>
-                                    <div class="cart-page__buttons">
-                                        <div class="cart-page__buttons-1">
-                                            <a class="thm-btn" href="{{ route('gallery.index') }}">
-                                                <span class="thm-btn-text">Continue Shopping</span>
-                                                <span class="thm-btn-icon-box"><i class="fas fa-arrow-right"></i></span>
-                                            </a>
-                                        </div>
+                                <div class="cart-page__buttons">
                                         @if($cartItems->isNotEmpty())
                                             <div class="cart-page__buttons-2">
                                                 <form method="POST" action="{{ route('cart.checkout') }}">

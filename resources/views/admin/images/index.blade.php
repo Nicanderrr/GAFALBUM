@@ -41,10 +41,152 @@
             padding: 0.85rem 1.1rem;
         }
 
+        .admin-events-btn.secondary {
+            background: #fff;
+            color: #334155;
+            border: 1px solid #dbe1ea;
+        }
+
+        .admin-events-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-import-panel {
+            display: grid;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid #f1f5f9;
+            background: linear-gradient(180deg, #fff, #fcfcfd);
+        }
+
+        .admin-import-grid {
+            display: grid;
+            gap: 1rem;
+            grid-template-columns: minmax(0, 1.3fr) minmax(320px, 1fr);
+        }
+
+        .admin-import-copy h4,
+        .admin-import-form h4,
+        .admin-import-report h4 {
+            margin: 0 0 0.45rem;
+            color: #111827;
+            font-size: 0.96rem;
+        }
+
+        .admin-import-copy p,
+        .admin-import-report p {
+            margin: 0;
+            color: #64748b;
+            font-size: 0.84rem;
+            line-height: 1.6;
+        }
+
+        .admin-import-copy code {
+            display: inline-block;
+            margin-top: 0.2rem;
+            border-radius: 6px;
+            background: #f8fafc;
+            color: #7f1d1d;
+            padding: 0.2rem 0.45rem;
+        }
+
+        .admin-import-form {
+            display: grid;
+            gap: 0.8rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            padding: 1rem;
+        }
+
+        .admin-import-form label {
+            color: #64748b;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        .admin-import-form input[type="file"] {
+            min-height: 44px;
+            border: 1px solid #dbe1ea;
+            border-radius: 9px;
+            background: #fff;
+            padding: 0.7rem 0.8rem;
+            font-size: 0.88rem;
+        }
+
+        .admin-import-form small {
+            color: #64748b;
+            font-size: 0.77rem;
+            line-height: 1.5;
+        }
+
+        .admin-import-actions {
+            display: flex;
+            align-items: center;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+        }
+
+        .admin-import-report {
+            display: grid;
+            gap: 0.8rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            background: #fff;
+            padding: 1rem;
+        }
+
+        .admin-import-report ul {
+            margin: 0;
+            padding-left: 1.1rem;
+            display: grid;
+            gap: 0.45rem;
+            color: #991b1b;
+            font-size: 0.82rem;
+        }
+
+        .admin-report-stats {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
         .admin-summary-grid {
             display: grid;
             gap: 1rem;
             grid-template-columns: repeat(5, minmax(0, 1fr));
+        }
+
+        .admin-feedback {
+            border-radius: 12px;
+            padding: 1rem 1.15rem;
+            font-size: 0.84rem;
+            font-weight: 700;
+        }
+
+        .admin-feedback.success {
+            border: 1px solid #bbf7d0;
+            background: #f0fdf4;
+            color: #166534;
+        }
+
+        .admin-feedback.error {
+            border: 1px solid #fecaca;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        .admin-feedback ul {
+            margin: 0;
+            padding-left: 1.1rem;
+            display: grid;
+            gap: 0.35rem;
         }
 
         .admin-summary-card {
@@ -273,6 +415,22 @@
     </style>
 
     <div class="admin-events-shell">
+        @php($importReport = session('import_report'))
+
+        @if(session('success'))
+            <div class="admin-feedback success">{{ session('success') }}</div>
+        @endif
+
+        @if($errors->any())
+            <div class="admin-feedback error">
+                <ul>
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="admin-summary-grid">
             <div class="admin-summary-card"><span>All Events</span><strong>{{ $summary['all'] }}</strong></div>
             <div class="admin-summary-card"><span>Published</span><strong>{{ $summary['published'] }}</strong></div>
@@ -287,8 +445,53 @@
                     <h3>Event Management</h3>
                     <p>Control live status, pricing, thumbnails, and the files attached to each event.</p>
                 </div>
-                <a href="{{ route('admin.images.create') }}" class="admin-events-btn">Add Event</a>
+                <div class="admin-events-toolbar">
+                    <a href="{{ route('admin.images.import.template') }}" class="admin-events-btn secondary">Download Import Template</a>
+                    <a href="{{ route('admin.images.create') }}" class="admin-events-btn">Add Event</a>
+                </div>
             </div>
+
+            <section class="admin-import-panel">
+                <div class="admin-import-grid">
+                    <div class="admin-import-copy">
+                        <h4>Bulk Import From Excel</h4>
+                        <p>Upload an Excel or CSV file to create multiple events in one pass. Each row must include event metadata plus existing media file paths from the public storage disk.</p>
+                        <p>Example media path format: <code>images/parade-01.jpg|images/parade-02.jpg|images/parade-clip-01.mp4</code></p>
+                    </div>
+                    <form method="POST" action="{{ route('admin.images.import') }}" enctype="multipart/form-data" class="admin-import-form">
+                        @csrf
+                        <h4>Import Spreadsheet</h4>
+                        <label for="import_file">Excel File</label>
+                        <input id="import_file" type="file" name="import_file" accept=".xlsx,.xls,.csv,text/csv">
+                        <small>Supported files: XLSX, XLS, CSV. Category names are auto-created if they do not exist yet.</small>
+                        <div class="admin-import-actions">
+                            <button type="submit" class="admin-filter-btn primary">Import Events</button>
+                            <a href="{{ route('admin.images.import.template') }}" class="admin-filter-btn">Get Template</a>
+                        </div>
+                    </form>
+                </div>
+
+                @if($importReport)
+                    <div class="admin-import-report">
+                        <div>
+                            <h4>Last Import Report</h4>
+                            <p>Review the result of the most recent bulk import.</p>
+                        </div>
+                        <div class="admin-report-stats">
+                            <span class="admin-data-pill">{{ $importReport['imported'] ?? 0 }} imported</span>
+                            <span class="admin-data-pill">{{ $importReport['skipped'] ?? 0 }} skipped</span>
+                            <span class="admin-data-pill">{{ count($importReport['errors'] ?? []) }} issues</span>
+                        </div>
+                        @if(!empty($importReport['errors']))
+                            <ul>
+                                @foreach($importReport['errors'] as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        @endif
+                    </div>
+                @endif
+            </section>
 
             <form method="GET" action="{{ route('admin.images.index') }}" class="admin-filter-bar">
                 <div class="admin-filter-field">
@@ -337,7 +540,7 @@
                         @forelse($images as $image)
                             <tr>
                                 <td>
-                                    <img src="{{ Storage::url($image->cover_path) }}" alt="{{ $image->title }}" class="admin-event-thumb">
+                                    <img src="{{ asset(Storage::url($image->cover_path)) }}" alt="{{ $image->title }}" class="admin-event-thumb">
                                 </td>
                                 <td>
                                     <div class="admin-event-title">

@@ -1,4 +1,6 @@
 @php
+    use App\Support\PreviewMedia;
+
     $cartCount = \App\Models\CartItem::where('user_id', auth()->id())->count();
     $purchasesHero = \App\Models\SiteHero::urlFor('purchases', '/helpest/assets/images/backgrounds/page-header-bg.jpg');
 @endphp
@@ -36,16 +38,13 @@
     <link rel="stylesheet" href="/helpest/assets/css/responsive.css" />
     <link rel="stylesheet" href="/helpest/gaf-home.css" />
     <link rel="stylesheet" href="/helpest/gaf-purchases.css" />
+    <x-site.screenshot-deterrents />
 </head>
 <body class="custom-cursor gaf-purchases-page">
     <div class="custom-cursor__cursor"></div>
     <div class="custom-cursor__cursor-two"></div>
 
-    <div class="loader js-preloader">
-        <div></div>
-        <div></div>
-        <div></div>
-    </div>
+    <x-site.preloader />
 
     <div class="page-wrapper">
         <header class="main-header">
@@ -150,7 +149,7 @@
                                 <div class="blog-one__single blog-one__single-{{ ($loop->index % 8) + 1 }} gaf-purchase-card">
                                     <div class="blog-one__img-box">
                                         <div class="blog-one__img">
-                                            <img src="{{ str_starts_with($cover, 'helpest/') ? asset($cover) : Storage::url($cover) }}" alt="{{ $title }}">
+                                            <img src="{{ PreviewMedia::url($cover) }}" alt="{{ $title }}">
                                             <a href="{{ $purchase->status === 'success' && $firstItem ? route('purchases.download', $firstItem) : route('gallery.index') }}" class="blog-one__link">
                                                 <span class="sr-only"></span>
                                             </a>

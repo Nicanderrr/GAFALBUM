@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ asset('lusion-template/styles.css') }}">
     <link rel="stylesheet" href="{{ asset('lusion-template/trayse-overrides.css') }}">
     <link rel="stylesheet" href="{{ asset('lusion-template/gaf-overrides.css') }}">
+    <x-site.screenshot-deterrents />
   </head>
   <body>
     <canvas id="stage" aria-hidden="true"></canvas>

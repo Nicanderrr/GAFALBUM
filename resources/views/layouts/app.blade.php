@@ -13,8 +13,10 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <x-site.screenshot-deterrents />
     </head>
     <body class="font-sans antialiased">
+        <x-site.preloader />
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 

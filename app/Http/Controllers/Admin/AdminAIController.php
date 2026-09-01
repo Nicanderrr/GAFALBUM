@@ -281,6 +281,35 @@ class AdminAIController extends Controller
             ->values()
             ->all();
 
+        $recentUsers = User::query()
+            ->where('is_admin', false)
+            ->latest()
+            ->take(20)
+            ->get()
+            ->map(fn (User $user) => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'service_number' => $user->service_number,
+                'email' => $user->email,
+                'created_at' => optional($user->created_at)->format('Y-m-d H:i'),
+            ])
+            ->values()
+            ->all();
+
+        $userDirectory = User::query()
+            ->where('is_admin', false)
+            ->orderBy('name')
+            ->take(250)
+            ->get()
+            ->map(fn (User $user) => [
+                'id' => $user->id,
+                'name' => $user->name,
+                'service_number' => $user->service_number,
+                'email' => $user->email,
+            ])
+            ->values()
+            ->all();
+
         $categoryBreakdown = Category::withCount('images')
             ->orderBy('name')
             ->get()
@@ -345,6 +374,8 @@ class AdminAIController extends Controller
                 'files_sold' => TransactionItem::whereHas('transaction', fn ($query) => $query->where('status', 'success'))->count(),
             ],
             'recent_events' => $recentEvents,
+            'recent_users' => $recentUsers,
+            'user_directory' => $userDirectory,
             'recent_payments' => $recentPayments,
             'top_events' => $topEvents,
             'categories_breakdown' => $categoryBreakdown,
@@ -362,6 +393,8 @@ class AdminAIController extends Controller
 
         return "You are GAFALBUM Admin AI, embedded in the Laravel admin panel. "
             ."Help the admin understand gallery operations, event publishing, hero images, users, payments, purchases, and the exact admin workflow available in this system. "
+            ."You have a live user directory below. If asked who a user is, whether a user exists, or to identify someone by name or service number, answer from that directory first. "
+            ."If a person is not present in the directory, say you cannot find that user in the current system context. "
             ."Use the live system context below when answering. If asked to perform an action, explain the exact admin page or workflow; do not claim you changed database records. "
             ."If the answer is in the context, answer directly with numbers. Keep answers short, practical, and operations-focused. "
             .'System context JSON: '.json_encode($context, JSON_PRETTY_PRINT);

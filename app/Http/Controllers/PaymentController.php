@@ -10,6 +10,7 @@ use App\Services\PaystackService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Illuminate\Http\RedirectResponse;
 
 class PaymentController extends Controller
 {
@@ -49,9 +50,9 @@ class PaymentController extends Controller
         });
 
         $response = $paystack->initializePayment([
-            'email' => auth()->user()->email,
+            'email' => $this->checkoutEmail(),
             'amount' => (int) round($amount * 100),
-            'currency' => config('services.paystack.currency', 'GHS'),
+            'currency' => config('paystack.currency', config('services.paystack.currency', 'GHS')),
             'reference' => $reference,
             'callback_url' => route('payments.paystack.callback'),
             'metadata' => [
@@ -59,6 +60,7 @@ class PaymentController extends Controller
                 'user_id' => auth()->id(),
                 'image_media_id' => $media->id,
                 'quick_download' => true,
+                'return_url' => url()->previous(),
             ],
         ]);
 
@@ -108,9 +110,9 @@ class PaymentController extends Controller
         });
 
         $response = $paystack->initializePayment([
-            'email' => auth()->user()->email,
+            'email' => $this->checkoutEmail(),
             'amount' => (int) round($amount * 100),
-            'currency' => config('services.paystack.currency', 'GHS'),
+            'currency' => config('paystack.currency', config('services.paystack.currency', 'GHS')),
             'reference' => $reference,
             'callback_url' => route('payments.paystack.callback'),
             'metadata' => [
@@ -154,6 +156,7 @@ class PaymentController extends Controller
         $status = data_get($verification, 'data.status');
         $paidAmount = (int) data_get($verification, 'data.amount', 0);
         $expectedAmount = (int) round(((float) $transaction->amount) * 100);
+        $returnUrl = data_get($verification, 'data.metadata.return_url');
 
         if ($status === 'success' && $paidAmount >= $expectedAmount) {
             DB::transaction(function () use ($transaction) {
@@ -163,6 +166,18 @@ class PaymentController extends Controller
                     ->whereIn('image_media_id', $transaction->items->pluck('image_media_id'))
                     ->delete();
             });
+
+            $transaction->loadMissing(['items.media', 'items.image.category']);
+
+            if ($transaction->items->count() === 1) {
+                $item = $transaction->items->first();
+
+                return $this->redirectWithUnlock(
+                    $returnUrl,
+                    $item,
+                    'Download unlocked. Your file is ready.'
+                );
+            }
 
             return redirect()->route('purchases.index')->with('success', 'Payment confirmed. Downloads are unlocked.');
         }
@@ -184,5 +199,49 @@ class PaymentController extends Controller
         abort_unless(Storage::disk('public')->exists($path), 404);
 
         return Storage::disk('public')->download($path);
+    }
+
+    protected function redirectWithUnlock(?string $returnUrl, TransactionItem $item, string $message): RedirectResponse
+    {
+        $downloadUrl = route('purchases.download', $item);
+        $targetUrl = $this->sanitizeReturnUrl($returnUrl) ?? route('purchases.index');
+
+        return redirect($targetUrl)->with([
+            'success' => $message,
+            'download_unlocked' => [
+                'title' => $item->media?->original_name ?: ($item->image?->title ? $item->image->title.' file' : 'Selected file'),
+                'event' => $item->image?->title ?? 'Gallery event',
+                'price' => 'GHS '.number_format((float) $item->amount, 2),
+                'download_url' => $downloadUrl,
+            ],
+        ]);
+    }
+
+    protected function sanitizeReturnUrl(?string $returnUrl): ?string
+    {
+        if (! $returnUrl) {
+            return null;
+        }
+
+        if (Str::startsWith($returnUrl, ['/'])) {
+            return url($returnUrl);
+        }
+
+        return Str::startsWith($returnUrl, url('/')) ? $returnUrl : null;
+    }
+
+    protected function checkoutEmail(): string
+    {
+        $user = auth()->user();
+
+        $email = trim((string) $user->email);
+        if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            return $email;
+        }
+
+        $domain = config('paystack.fallback_email_domain', 'gafalbum.com');
+        $identifier = $user->service_number ? Str::slug($user->service_number, '-') : ('user-'.$user->id);
+
+        return 'paystack+'.$identifier.'@'.$domain;
     }
 }

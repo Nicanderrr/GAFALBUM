@@ -1,7 +1,8 @@
 @php
-    $editing = isset($image);
-    $selectedStatus = old('status', $image->status ?? 'published');
-    $selectedCoverId = old('cover_media_id', $image->cover_media_id ?? optional($image->coverMedia)->id);
+    $image = $image ?? null;
+    $editing = $image !== null;
+    $selectedStatus = old('status', $image?->status ?? 'published');
+    $selectedCoverId = old('cover_media_id', $image?->cover_media_id ?? $image?->coverMedia?->id);
 @endphp
 
 <style>
@@ -380,9 +381,9 @@
                                 <label class="admin-media-card">
                                     <div class="admin-media-preview">
                                         @if($media->media_type === 'video')
-                                            <video src="{{ Storage::url($media->file_path) }}" muted playsinline></video>
+                                            <video src="{{ asset(Storage::url($media->file_path)) }}" muted playsinline></video>
                                         @else
-                                            <img src="{{ Storage::url($media->file_path) }}" alt="{{ $image->title }}">
+                                            <img src="{{ asset(Storage::url($media->file_path)) }}" alt="{{ $image->title }}">
                                         @endif
                                         <span class="admin-media-type">{{ $media->media_type }}</span>
                                     </div>

@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GAF Album System Logic Flowchart</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f4f6f8;
+      color: #17202a;
+    }
+
+    header {
+      padding: 28px 36px 18px;
+      background: #ffffff;
+      border-bottom: 1px solid #d8dee6;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      font-weight: 700;
+    }
+
+    main {
+      padding: 28px 36px 48px;
+    }
+
+    section {
+      margin-bottom: 32px;
+      padding: 24px;
+      background: #ffffff;
+      border: 1px solid #d8dee6;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    h2 {
+      margin: 0 0 18px;
+      font-size: 20px;
+    }
+
+    .mermaid {
+      min-width: 960px;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      section {
+        break-inside: avoid;
+        border: 1px solid #b8c0cc;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>GAF Album System Logic Flowchart</h1>
+  </header>
+
+  <main>
+    <section>
+      <h2>Overall System Flow</h2>
+      <pre class="mermaid">
+flowchart TD
+    A([Start]) --> B[User opens system]
+    B --> C{Authenticated?}
+    C -- No --> D{Login type}
+    D -- Regular user --> E[Enter service number]
+    D -- Admin --> F[Enter service number and password]
+    E --> G{Valid regular user?}
+    F --> H{Valid admin?}
+    G -- No --> I[Show login error or rate limit]
+    H -- No --> I
+    I --> D
+    G -- Yes --> J[Open user dashboard]
+    H -- Yes --> K[Open admin dashboard]
+    C -- Yes --> L{Admin route requested?}
+    L -- Yes --> M{User is admin?}
+    M -- Yes --> K
+    M -- No --> N[Logout and redirect to login]
+    L -- No --> J
+    J --> O{User action}
+    O -- Browse gallery --> P[Search, filter, or sort published events]
+    O -- View event --> Q[Open event details or experience view]
+    O -- Manage cart --> R[View, add, or remove cart items]
+    O -- Checkout --> S[Paystack payment flow]
+    O -- View purchases --> T[Show successful transactions]
+    O -- Download media --> U[Verify ownership and payment success]
+    K --> V{Admin action}
+    V -- Categories --> W[Create, update, or delete categories]
+    V -- Events and media --> X[Create, update, import, or delete events]
+    V -- Users --> Y[Create, import, update, or delete users]
+    V -- Admins --> Z[Manage admin accounts]
+    V -- Payments --> AA[Filter and view transactions]
+    V -- Site settings --> AB[Update hero and protection settings]
+    U --> AD{Allowed?}
+    AD -- Yes --> AE[Download file]
+    AD -- No --> AF[Return 403 or 404]
+    S --> AG[Payment completed or failed]
+    AG --> O
+      </pre>
+    </section>
+
+    <section>
+      <h2>User Purchase and Download Flow</h2>
+      <pre class="mermaid">
+flowchart TD
+    A([Authenticated user]) --> B[Open gallery]
+    B --> C[Load published events]
+    C --> D{Filters selected?}
+    D -- Yes --> E[Apply search, category, and sort]
+    D -- No --> F[Show featured listing]
+    E --> G[Display gallery]
+    F --> G
+    G --> H[Open event]
+    H --> I[Load event media]
+    I --> J{Already purchased?}
+    J -- Yes --> K[Show download access]
+    J -- No --> L[Show add-to-cart or buy-now]
+    L --> M{Selected action}
+    M -- Add to cart --> N[Create cart item if new]
+    M -- Buy now --> O[Create pending transaction for one media item]
+    M -- Checkout cart --> P[Load cart items]
+    P --> Q{Cart empty?}
+    Q -- Yes --> R[Return cart error]
+    Q -- No --> S[Create pending transaction for cart]
+    O --> T[Initialize Paystack]
+    S --> T
+    T --> U{Authorization URL returned?}
+    U -- No --> V[Mark transaction failed]
+    U -- Yes --> W[Redirect to Paystack]
+    W --> X[Paystack callback with reference]
+    X --> Y[Verify payment]
+    Y --> Z{Success and amount valid?}
+    Z -- No --> AA[Mark failed and return error]
+    Z -- Yes --> AB[Mark transaction successful]
+    AB --> AC[Remove paid cart items]
+    AC --> AD{Single item?}
+    AD -- Yes --> AE[Return download unlocked]
+    AD -- No --> AF[Open purchases page]
+    K --> AG[Download request]
+    AE --> AG
+    AF --> AG
+    AG --> AH{Owner and successful transaction?}
+    AH -- No --> AI[Abort 403]
+    AH -- Yes --> AJ{File exists?}
+    AJ -- No --> AK[Abort 404]
+    AJ -- Yes --> AL[Download media file]
+      </pre>
+    </section>
+
+    <section>
+      <h2>Admin Event Management Flow</h2>
+      <pre class="mermaid">
+flowchart TD
+    A([Authenticated admin]) --> B[Open event listing]
+    B --> C{Action}
+    C -- Create --> D[Enter event details and upload media]
+    D --> E{Valid?}
+    E -- No --> F[Return errors]
+    E -- Yes --> G{First file is image?}
+    G -- No --> F
+    G -- Yes --> H[Store media files]
+    H --> I[Create event]
+    I --> J[Create media records]
+    J --> K[Set cover image]
+    K --> B
+    C -- Update --> L[Load event and media]
+    L --> M[Validate fields, uploads, removals, and cover]
+    M --> N{Valid?}
+    N -- No --> F
+    N -- Yes --> O[Update event fields]
+    O --> P[Delete removed media]
+    P --> Q[Append new media]
+    Q --> R{Has media and thumbnail image?}
+    R -- No --> F
+    R -- Yes --> S[Update cover and thumbnail]
+    S --> B
+    C -- Delete --> T[Delete media files]
+    T --> U[Delete event record]
+    U --> B
+    C -- Import --> V[Upload spreadsheet]
+    V --> W[Read rows]
+    W --> X{Rows exist?}
+    X -- No --> Y[Return import error]
+    X -- Yes --> Z[Validate row]
+    Z --> AA{Row valid?}
+    AA -- No --> AB[Skip row and record error]
+    AA -- Yes --> AC[Create category if needed]
+    AC --> AD[Create event and media records]
+    AD --> AE[Set cover media]
+    AB --> AF{More rows?}
+    AE --> AF
+    AF -- Yes --> Z
+    AF -- No --> AG[Return import report]
+    Y --> B
+    AG --> B
+      </pre>
+    </section>
+
+    <section>
+      <h2>Admin User Management Flow</h2>
+      <pre class="mermaid">
+flowchart TD
+    A([Authenticated admin]) --> B[Open users module]
+    B --> C[Load regular users]
+    C --> D{Action}
+    D -- Create --> E[Enter name, email, and service number]
+    E --> F{Valid and unique?}
+    F -- No --> G[Return validation errors]
+    F -- Yes --> H[Generate password]
+    H --> I[Create user]
+    I --> J{Email provided?}
+    J -- Yes --> K[Send user-created email]
+    J -- No --> C
+    K --> C
+    D -- Edit --> L[Update user details]
+    L --> M{Valid and unique?}
+    M -- No --> G
+    M -- Yes --> N[Save changes]
+    N --> C
+    D -- Delete --> O[Delete user]
+    O --> C
+    D -- Import --> P[Upload spreadsheet]
+    P --> Q[Read rows and validate]
+    Q --> R{Row valid?}
+    R -- No --> S[Skip row and collect error]
+    R -- Yes --> T[Generate password and create user]
+    T --> U{Email provided?}
+    U -- Yes --> V[Send email]
+    U -- No --> W[Skip email]
+    S --> X{More rows?}
+    V --> X
+    W --> X
+    X -- Yes --> Q
+    X -- No --> Y[Return import report]
+    Y --> C
+    D -- Assign passwords --> Z[Find users missing passwords]
+    Z --> AA[Set password to service number]
+    AA --> C
+      </pre>
+    </section>
+
+    <section>
+      <h2>Main Data Relationships</h2>
+      <pre class="mermaid">
+flowchart LR
+    User[users] -->|has many| CartItem[cart_items]
+    User -->|has many| Transaction[transactions]
+    User -->|admin uploads| Image[images/events]
+    Category[categories] -->|has many| Image
+    Image -->|has many| ImageMedia[image_media]
+    Image -->|cover media| ImageMedia
+    CartItem -->|belongs to| Image
+    CartItem -->|selected file| ImageMedia
+    Transaction -->|has many| TransactionItem[transaction_items]
+    TransactionItem -->|belongs to| Image
+    TransactionItem -->|download file| ImageMedia
+    SiteHero[site_heroes] --> PublicPages[user pages]
+    SiteSetting[site_settings] --> SiteProtection[site protection]
+      </pre>
+    </section>
+  </main>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: 'base',
+      themeVariables: {
+        primaryColor: '#e8f1ff',
+        primaryTextColor: '#17202a',
+        primaryBorderColor: '#4472c4',
+        lineColor: '#4a5568',
+        secondaryColor: '#eef7ec',
+        tertiaryColor: '#fff7e6',
+        fontFamily: 'Arial, Helvetica, sans-serif'
+      },
+      flowchart: {
+        curve: 'basis',
+        nodeSpacing: 42,
+        rankSpacing: 54
+      }
+    });
+  </script>
+</body>
+</html>

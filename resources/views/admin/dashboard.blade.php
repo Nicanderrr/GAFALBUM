@@ -162,6 +162,108 @@
             justify-content: space-between;
         }
 
+        .admin-quick-actions-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .admin-quick-action {
+            position: relative;
+            display: flex;
+            min-height: 150px;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 1.25rem 1.3rem;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.04);
+            text-decoration: none;
+            color: inherit;
+            overflow: hidden;
+            transition: transform 160ms ease, box-shadow 160ms ease, border-color 160ms ease;
+        }
+
+        .admin-quick-action:hover {
+            transform: translateY(-2px);
+            border-color: rgba(128, 0, 0, 0.18);
+            box-shadow: 0 16px 34px rgba(15, 23, 42, 0.08);
+        }
+
+        .admin-quick-action::after {
+            position: absolute;
+            inset: auto -18px -18px auto;
+            width: 92px;
+            height: 92px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(128, 0, 0, 0.12) 0%, rgba(128, 0, 0, 0) 68%);
+            content: "";
+        }
+
+        .admin-quick-action__top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .admin-quick-action__icon {
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            color: #800000;
+            background: #fdf2f2;
+            border: 1px solid #f5d0d0;
+            flex: 0 0 42px;
+        }
+
+        .admin-quick-action__icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .admin-quick-action__label {
+            font-size: 0.72rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #6b7280;
+        }
+
+        .admin-quick-action h4 {
+            margin: 0;
+            color: #111827;
+            font-size: 1rem;
+            font-weight: 800;
+        }
+
+        .admin-quick-action p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.86rem;
+            line-height: 1.5;
+        }
+
+        .admin-quick-action__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #800000;
+            font-size: 0.82rem;
+            font-weight: 800;
+        }
+
         .admin-kpi-top {
             display: flex;
             align-items: flex-start;
@@ -258,6 +360,7 @@
 
         @media (max-width: 1180px) {
             .admin-dashboard-grid,
+            .admin-quick-actions-grid,
             .admin-dashboard-split {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
@@ -265,6 +368,7 @@
 
         @media (max-width: 760px) {
             .admin-dashboard-grid,
+            .admin-quick-actions-grid,
             .admin-dashboard-split,
             .admin-pie-wrap {
                 grid-template-columns: 1fr;
@@ -341,6 +445,56 @@
             <div class="widget-value">GHS {{ number_format($stats['successful_payments'] ? $stats['revenue'] / $stats['successful_payments'] : 0, 2) }}</div>
             <div class="admin-kpi-note">Based on paid transactions</div>
         </div>
+    </div>
+
+    <div class="admin-quick-actions-grid">
+        <a href="{{ route('admin.images.index') }}" class="admin-quick-action">
+            <div class="admin-quick-action__top">
+                <div>
+                    <div class="admin-quick-action__label">Events</div>
+                    <h4>Manage uploads</h4>
+                </div>
+                <div class="admin-quick-action__icon"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 14l3-3 4 4 2-2 3 3"/><circle cx="8" cy="10" r="1"/></svg></div>
+            </div>
+            <p>Add events, edit titles, update prices, and replace cover files.</p>
+            <span class="admin-quick-action__cta">Open events <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a href="{{ route('admin.site-heroes.index') }}" class="admin-quick-action">
+            <div class="admin-quick-action__top">
+                <div>
+                    <div class="admin-quick-action__label">Branding</div>
+                    <h4>Hero images</h4>
+                </div>
+                <div class="admin-quick-action__icon"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z"/><path d="M7 15l3-4 3 3 2-2 2 3"/><circle cx="9" cy="9" r="1"/></svg></div>
+            </div>
+            <p>Control the dashboard backgrounds, foregrounds, and process artwork.</p>
+            <span class="admin-quick-action__cta">Edit heroes <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a href="{{ route('admin.site-protection.edit') }}" class="admin-quick-action">
+            <div class="admin-quick-action__top">
+                <div>
+                    <div class="admin-quick-action__label">Protection</div>
+                    <h4>Site settings</h4>
+                </div>
+                <div class="admin-quick-action__icon"><svg viewBox="0 0 24 24"><path d="M12 3l7 4v5c0 5-3 8-7 9-4-1-7-4-7-9V7z"/><path d="M9 12l2 2 4-4"/></svg></div>
+            </div>
+            <p>Toggle copy and right-click protection without leaving the dashboard.</p>
+            <span class="admin-quick-action__cta">Open settings <span aria-hidden="true">→</span></span>
+        </a>
+
+        <a href="{{ route('admin.payments.index') }}" class="admin-quick-action">
+            <div class="admin-quick-action__top">
+                <div>
+                    <div class="admin-quick-action__label">Finance</div>
+                    <h4>Review payments</h4>
+                </div>
+                <div class="admin-quick-action__icon"><svg viewBox="0 0 24 24"><path d="M4 7h16v10H4z"/><path d="M7 11h4"/><path d="M15 11h2"/><path d="M8 15h8"/></svg></div>
+            </div>
+            <p>Track successful purchases, pending transactions, and payment activity.</p>
+            <span class="admin-quick-action__cta">View payments <span aria-hidden="true">→</span></span>
+        </a>
     </div>
 
     <div class="admin-dashboard-split">
@@ -420,7 +574,7 @@
             <div class="admin-top-events">
                 @forelse($topEvents as $event)
                     <div class="admin-top-event">
-                        <img src="{{ Storage::url($event->thumbnail_path ?: $event->file_path) }}" alt="{{ $event->title }}">
+                        <img src="{{ asset(Storage::url($event->thumbnail_path ?: $event->file_path)) }}" alt="{{ $event->title }}">
                         <div>
                             <strong>{{ $event->title }}</strong>
                             <div class="admin-muted">{{ number_format($event->files) }} {{ $event->files == 1 ? 'file' : 'files' }} sold</div>
@@ -449,7 +603,7 @@
             <tbody>
                 @forelse($recentImages as $image)
                     <tr>
-                        <td><img src="{{ Storage::url($image->cover_path) }}" alt="thumb" style="width: 50px; height: 42px; object-fit: cover; border-radius: 5px;"></td>
+                        <td><img src="{{ asset(Storage::url($image->cover_path)) }}" alt="thumb" style="width: 50px; height: 42px; object-fit: cover; border-radius: 5px;"></td>
                         <td>{{ $image->title }}</td>
                         <td><span class="badge">{{ $image->category->name ?? 'None' }}</span></td>
                         <td>GHS {{ number_format($image->price, 2) }}</td>

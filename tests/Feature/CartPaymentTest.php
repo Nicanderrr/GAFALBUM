@@ -55,7 +55,7 @@ class CartPaymentTest extends TestCase
 
     public function test_checkout_initializes_paystack_and_creates_pending_transaction(): void
     {
-        config(['services.paystack.secret_key' => 'sk_test_xxx']);
+        config(['paystack.secret_key' => 'sk_test_xxx']);
 
         Http::fake([
             'https://api.paystack.co/transaction/initialize' => Http::response([
@@ -89,7 +89,7 @@ class CartPaymentTest extends TestCase
 
     public function test_quick_media_payment_initializes_paystack_without_cart_checkout(): void
     {
-        config(['services.paystack.secret_key' => 'sk_test_xxx']);
+        config(['paystack.secret_key' => 'sk_test_xxx']);
 
         Http::fake([
             'https://api.paystack.co/transaction/initialize' => Http::response([
@@ -142,7 +142,7 @@ class CartPaymentTest extends TestCase
 
     public function test_successful_paystack_callback_marks_transaction_success_and_clears_cart(): void
     {
-        config(['services.paystack.secret_key' => 'sk_test_xxx']);
+        config(['paystack.secret_key' => 'sk_test_xxx']);
 
         Http::fake([
             'https://api.paystack.co/transaction/verify/GAF-TEST' => Http::response([
@@ -243,15 +243,14 @@ class CartPaymentTest extends TestCase
             ->assertDontSee('data-title="Photo Event - Photo 1"', false);
     }
 
-    public function test_gallery_event_opens_payment_modal_for_unpurchased_media(): void
+    public function test_gallery_event_shows_direct_paystack_checkout_form_for_unpurchased_media(): void
     {
         [$user, $media] = $this->makeUserAndMedia();
 
         $this->actingAs($user)
             ->get(route('gallery.show', $media->image_id))
             ->assertOk()
-            ->assertSee('gaf-open-download-modal')
-            ->assertSee('Pay')
+            ->assertSee('Pay & Unlock', false)
             ->assertSee(route('payments.media.checkout', $media), false);
     }
 

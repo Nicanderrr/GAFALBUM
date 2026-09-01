@@ -16,6 +16,6 @@ class SiteHero extends Model
     {
         $hero = static::where('key', $key)->first();
 
-        return $hero ? Storage::url($hero->image_path) : $fallback;
+        return $hero ? asset(Storage::url($hero->image_path)) : $fallback;
     }
 }

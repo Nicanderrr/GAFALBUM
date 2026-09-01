@@ -187,3 +187,12 @@
 /*==============================================
     End     
 ===============================================*/
+
+.process-one__img {
+    -webkit-mask: none;
+    mask: none;
+    -webkit-mask: url("/helpest/assets/images/shapes/process-one-shield-mask.svg") center center / cover no-repeat;
+    mask: url("/helpest/assets/images/shapes/process-one-shield-mask.svg") center center / cover no-repeat;
+    overflow: hidden;
+    max-width: 360px;
+}

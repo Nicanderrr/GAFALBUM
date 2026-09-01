@@ -1,9 +1,11 @@
 @php
-    $imageUrl = Storage::url($image->cover_path);
+    use App\Support\PreviewMedia;
+
+    $imageUrl = PreviewMedia::url($image->cover_path);
     $mediaCount = $image->media->count() ?: 1;
     $category = $image->category->name ?? 'Uncategorized';
     $description = $image->description ?? 'Preview this gallery item, then proceed to payment to unlock the clean download.';
-    $palette = ['#1a1411', '#f5d0d0', '#800000', '#f5d0d0', '#8f3a3a'];
+    $palette = ['#fbf7f5', '#101816', '#800000', '#f3e7e3', '#101816'];
 @endphp
 <!doctype html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
@@ -14,6 +16,7 @@
     <link rel="stylesheet" href="/_astro/about.CNa9RfUh.css">
     <link rel="stylesheet" href="/trayse-overrides.css">
     <link rel="stylesheet" href="{{ asset('lusion-template/gaf-overrides.css') }}">
+    <x-site.screenshot-deterrents />
   </head>
   <body class="static-project-detail-body" style="--project-details-bg: {{ $palette[0] }}; --project-details-highlight: {{ $palette[2] }}; --project-details-text: {{ $palette[1] }}; --project-details-btn-bg: {{ $palette[3] }}; --project-details-btn-text: {{ $palette[4] }}; --project-details-image: url('{{ $imageUrl }}');">
     <div id="project" class="page">

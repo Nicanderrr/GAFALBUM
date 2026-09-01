@@ -3,6 +3,18 @@
     
 
 
+@php
+    $processImage1 = \App\Models\SiteHero::urlFor('dashboard_process_1', '/helpest/assets/images/resources/process-1-1.jpg');
+    $processImage2 = \App\Models\SiteHero::urlFor('dashboard_process_2', '/helpest/assets/images/resources/process-1-2.jpg');
+    $processImage3 = \App\Models\SiteHero::urlFor('dashboard_process_3', '/helpest/assets/images/resources/process-1-3.jpg');
+    $serviceImage1 = \App\Models\SiteHero::urlFor('homepage_service_1', '/helpest/assets/images/services/services-2-1.jpg');
+    $serviceImage2 = \App\Models\SiteHero::urlFor('homepage_service_2', '/helpest/assets/images/services/services-2-2.jpg');
+    $serviceImage3 = \App\Models\SiteHero::urlFor('homepage_service_3', '/helpest/assets/images/services/services-2-3.jpg');
+    $serviceImage4 = \App\Models\SiteHero::urlFor('homepage_service_4', '/helpest/assets/images/services/services-2-4.jpg');
+    $serviceImage5 = \App\Models\SiteHero::urlFor('homepage_service_5', '/helpest/assets/images/services/services-2-5.jpg');
+    $serviceImage6 = \App\Models\SiteHero::urlFor('homepage_service_6', '/helpest/assets/images/services/services-2-6.jpg');
+@endphp
+
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -70,6 +82,7 @@
     <link rel="stylesheet" href="/helpest/assets/css/style.css" />
     <link rel="stylesheet" href="/helpest/assets/css/responsive.css" />
     <link rel="stylesheet" href="/helpest/gaf-home.css" />
+    <x-site.screenshot-deterrents />
     
     </head>
 
@@ -510,7 +523,7 @@
                     <div class="process-one__single-inner">
                         <div class="process-one__single">
                             <div class="process-one__img">
-                                <img src="/helpest/assets/images/resources/process-1-1.jpg" alt="">
+                                <img src="{{ $processImage1 }}" alt="">
                                 <div class="process-one__icon">
                                     <span class="icon-user-1"></span>
                                 </div>
@@ -537,7 +550,7 @@
                     <div class="process-one__single-inner">
                         <div class="process-one__single">
                             <div class="process-one__img">
-                                <img src="/helpest/assets/images/resources/process-1-2.jpg" alt="">
+                                <img src="{{ $processImage2 }}" alt="">
                                 <div class="process-one__icon">
                                     <span class="icon-financing"></span>
                                 </div>
@@ -564,7 +577,7 @@
                     <div class="process-one__single-inner">
                         <div class="process-one__single">
                             <div class="process-one__img">
-                                <img src="/helpest/assets/images/resources/process-1-3.jpg" alt="">
+                                <img src="{{ $processImage3 }}" alt="">
                                 <div class="process-one__icon">
                                     <span class="icon-kindness"></span>
                                 </div>
@@ -790,7 +803,7 @@
                     <div class="services-two__single">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-1.jpg" alt="">
+                                <img src="{{ $serviceImage1 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -817,7 +830,7 @@
                     <div class="services-two__single services-two__single-2">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-2.jpg" alt="">
+                                <img src="{{ $serviceImage2 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -844,7 +857,7 @@
                     <div class="services-two__single services-two__single-3">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-3.jpg" alt="">
+                                <img src="{{ $serviceImage3 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -871,7 +884,7 @@
                     <div class="services-two__single services-two__single-4">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-4.jpg" alt="">
+                                <img src="{{ $serviceImage4 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -898,7 +911,7 @@
                     <div class="services-two__single services-two__single-5">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-5.jpg" alt="">
+                                <img src="{{ $serviceImage5 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -925,7 +938,7 @@
                     <div class="services-two__single services-two__single-6">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-6.jpg" alt="">
+                                <img src="{{ $serviceImage6 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -952,7 +965,7 @@
                     <div class="services-two__single">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-1.jpg" alt="">
+                                <img src="{{ $serviceImage1 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -979,7 +992,7 @@
                     <div class="services-two__single services-two__single-2">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-2.jpg" alt="">
+                                <img src="{{ $serviceImage2 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -1006,7 +1019,7 @@
                     <div class="services-two__single services-two__single-3">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-3.jpg" alt="">
+                                <img src="{{ $serviceImage3 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">
@@ -1033,7 +1046,7 @@
                     <div class="services-two__single services-two__single-4">
                         <div class="services-two__img-box">
                             <div class="services-two__img">
-                                <img src="/helpest/assets/images/services/services-2-4.jpg" alt="">
+                                <img src="{{ $serviceImage4 }}" alt="">
                             </div>
                         </div>
                         <div class="services-two__content">

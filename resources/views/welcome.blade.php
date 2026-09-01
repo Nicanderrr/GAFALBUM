@@ -7,6 +7,7 @@
         <title>{{ config('app.name', 'Laravel') }}</title>
 
         @fonts
+        <x-site.screenshot-deterrents />
 
         <!-- Styles / Scripts -->
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))

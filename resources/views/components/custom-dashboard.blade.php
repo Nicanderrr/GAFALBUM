@@ -25,6 +25,14 @@
                 </div>
             </div>
 
+            @php
+                $settingsUrl = auth()->user()->is_admin ? route('admin.site-protection.edit') : route('profile.edit');
+                $settingsActive = auth()->user()->is_admin
+                    ? request()->routeIs('admin.site-protection.*')
+                    : request()->routeIs('profile.edit');
+                $settingsLabel = auth()->user()->is_admin ? 'Site Settings' : 'Settings';
+            @endphp
+
             <nav class="sidebar-nav">
                 <div class="nav-section">Main</div>
 
@@ -48,6 +56,10 @@
                     <a href="{{ route('admin.site-heroes.index') }}" class="nav-item {{ request()->routeIs('admin.site-heroes.*') ? 'active' : '' }}">
                         <span class="nav-icon">&#128247;</span>
                         Hero Images
+                    </a>
+                    <a href="{{ route('admin.site-protection.edit') }}" class="nav-item {{ request()->routeIs('admin.site-protection.*') ? 'active' : '' }}">
+                        <span class="nav-icon">&#128274;</span>
+                        Site Protection
                     </a>
                     <a href="{{ route('admin.admins.index') }}" class="nav-item {{ request()->routeIs('admin.admins.*') ? 'active' : '' }}">
                         <span class="nav-icon">&#128101;</span>
@@ -73,9 +85,9 @@
                 @endif
 
                 <div class="nav-section">Account</div>
-                <a href="{{ route('profile.edit') }}" class="nav-item {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
+                <a href="{{ $settingsUrl }}" class="nav-item {{ $settingsActive ? 'active' : '' }}">
                     <span class="nav-icon">&#9881;</span>
-                    Settings
+                    {{ $settingsLabel }}
                 </a>
             </nav>
         </aside>
